@@ -5,6 +5,7 @@
     event.preventDefault();
     files = event.dataTransfer.files;
     console.log(files);
+    event.currentTarget.classList.remove("dragover");
   }
 
   function onSelect(event) {
@@ -15,9 +16,27 @@
   function openFileDialog() {
     document.getElementById("fileInput").click();
   }
+
+  function onDragOver(event) {
+    event.preventDefault();
+    event.currentTarget.classList.add("dragover");
+  }
+
+  function onDragLeave(event) {
+    event.currentTarget.classList.remove("dragover");
+  }
 </script>
 
-<div class="drop-zone" on:click={openFileDialog} on:drop={onDrop}>
+<div
+  class="drop-zone"
+  role="button"
+  tabindex="0"
+  on:click={openFileDialog}
+  on:drop={onDrop}
+  on:dragover={onDragOver}
+  on:dragleave={onDragLeave}
+  on:keydown={(e) => e.key === "Enter" && openFileDialog()}
+>
   <div class="drop-zone__prompt">
     <svg
       class="svg-upload"
@@ -54,7 +73,7 @@
     </div>
     {#if files.length > 0}
       {#each Array.from(files) as file}
-        <div key={file.name}>
+        <div>
           <span class="font-bold">Selected File: </span>
           {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
         </div>
