@@ -1,24 +1,20 @@
 <script>
-  import { onMount } from "svelte";
+  let files = [];
 
-  onMount(() => {
-    let files = [];
+  function onDrop(event) {
+    event.preventDefault();
+    files = event.dataTransfer.files;
+    console.log(files);
+  }
 
-    function onDrop(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      files = [...event.dataTransfer.files];
-      console.log(files);
-    }
+  function onSelect(event) {
+    files = event.target.files;
+    console.log(files);
+  }
 
-    function onSelect(event) {
-      files = event.target.files;
-    }
-
-    function openFileDialog() {
-      document.getElementById("fileInput").click();
-    }
-  });
+  function openFileDialog() {
+    document.getElementById("fileInput").click();
+  }
 </script>
 
 <div class="drop-zone" on:click={openFileDialog} on:drop={onDrop}>
@@ -47,6 +43,7 @@
     id="fileInput"
     class="drop-zone__input"
     accept=".mp3,.mp4,.mpeg,.mpga,.m4a,.wav,.webm"
+    on:change={onSelect}
   />
   <div class="file-info">
     <div>
@@ -55,7 +52,17 @@
         >whisper-large-v3</span
       >
     </div>
-    <div class="file-size-message">Max file size: 25MB</div>
+    {#if files.length > 0}
+      {#each Array.from(files) as file}
+        <div key={file.name}>
+          <span class="font-bold">Selected File: </span>
+          {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+        </div>
+      {/each}
+    {/if}
+    {#if files.length === 0}
+      <div class="file-size-message">Max file size: 25MB</div>
+    {/if}
     <br />
     <div class="format-chip-container">
       <div class="format-chip">mp3</div>
@@ -75,7 +82,6 @@
     max-width: 60%;
     min-height: 200px;
     padding: 25px;
-    /* margin: 0 auto; */
     display: flex;
     align-items: center;
     justify-content: center;
