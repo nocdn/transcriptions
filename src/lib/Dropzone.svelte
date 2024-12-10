@@ -98,7 +98,7 @@
 <style>
   .drop-zone {
     width: 100%;
-    max-width: 60%;
+    /* max-width: 60%; */
     min-height: 200px;
     padding: 25px;
     display: flex;
