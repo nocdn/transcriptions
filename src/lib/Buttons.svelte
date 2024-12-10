@@ -1,4 +1,14 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
+  function handleClick() {
+    dispatch("buttonClick", {
+      message: "The button was clicked!",
+      // You can add other data here as needed
+    });
+  }
+
   function logClick(button) {
     console.log(`Clicked button: ${button}`);
   }
@@ -8,6 +18,7 @@
   <button
     on:click={() => {
       logClick("Cancel");
+      handleClick();
     }}
     class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487]"
   >
