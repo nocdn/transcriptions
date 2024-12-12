@@ -1,12 +1,10 @@
 <script>
-  function logClick(button) {
-    console.log(`Clicked button: ${button}`);
-  }
+  let { onButtonClick } = $props();
 </script>
 
 <button
-  on:click={() => {
-    logClick("History");
+  onclick={() => {
+    onButtonClick("history");
   }}
   class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300"
 >

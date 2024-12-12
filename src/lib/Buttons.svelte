@@ -1,13 +1,11 @@
 <script>
-  function logClick(button) {
-    console.log(`Clicked button: ${button}`);
-  }
+  let { onButtonClick } = $props();
 </script>
 
 <div class="flex gap-3">
   <button
-    on:click={() => {
-      logClick("Cancel");
+    onclick={() => {
+      onButtonClick("cancel");
     }}
     class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487]"
   >
@@ -28,8 +26,8 @@
     Cancel
   </button>
   <button
-    on:click={() => {
-      logClick("Submit");
+    onclick={() => {
+      onButtonClick("submit");
     }}
     class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#ECF7ED] hover:text-green-950 hover:outline-1 hover:outline-dashed hover:outline-[#3d8549]"
   >
