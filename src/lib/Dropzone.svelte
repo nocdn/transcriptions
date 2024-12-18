@@ -1,16 +1,17 @@
 <script>
+  let { handleFiles } = $props();
   let files = [];
 
   function onDrop(event) {
     event.preventDefault();
     files = event.dataTransfer.files;
-    console.log(files);
+    handleFiles(files);
     event.currentTarget.classList.remove("dragover");
   }
 
   function onSelect(event) {
     files = event.target.files;
-    console.log(files);
+    handleFiles(files);
   }
 
   function openFileDialog() {
