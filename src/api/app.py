@@ -2,12 +2,14 @@ import os
 import logging
 from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 from groq import Groq
 import google.generativeai as genai
 from pathlib import Path
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 app = Flask(__name__)
+CORS(app)
 groq_client = Groq(api_key="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")
 
 # Configure file upload settings

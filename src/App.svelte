@@ -20,7 +20,7 @@
         formData.append("language", "en");
         formData.append("response_format", "text");
 
-        const response = await fetch("/api/upload", {
+        const response = await fetch("http://localhost:6005/api/upload", {
           method: "POST",
           body: formData,
         });
