@@ -1,5 +1,12 @@
 <script>
   let { onButtonClick } = $props();
+
+  onkeydown = (event) => {
+    if (event.key === "Enter" && event.metaKey) {
+      console.log("cmd+enter pressed");
+      onButtonClick("submit");
+    }
+  };
 </script>
 
 <div class="flex gap-3">

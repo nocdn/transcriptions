@@ -1,12 +1,25 @@
 <script>
   let { handleFiles } = $props();
-  let files = [];
+  let files = $state([]);
 
+  let inputFileName = $state("");
   function onDrop(event) {
     event.preventDefault();
     files = event.dataTransfer.files;
     handleFiles(files);
     event.currentTarget.classList.remove("dragover");
+    console.log(`Dropped file: ${files[0].name}`);
+    inputFileName = files[0].name;
+  }
+
+  function calculateFileSizeColor(size) {
+    if (size < 1024 * 1024 * 10) {
+      return "text-green-600";
+    } else if (size < 1024 * 1024 * 20) {
+      return "text-yellow-600";
+    } else {
+      return "text-red-600";
+    }
   }
 
   function onSelect(event) {
@@ -76,7 +89,12 @@
       {#each Array.from(files) as file}
         <div>
           <span class="font-bold">Selected File: </span>
-          {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          {file.name}
+          <span
+            class={calculateFileSizeColor(file.size)}
+            style="font-weight: bold"
+            >({(file.size / 1024 / 1024).toFixed(2)} MB)</span
+          >
         </div>
       {/each}
     {/if}
