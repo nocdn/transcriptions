@@ -5,6 +5,16 @@
   function copyToClipboard() {
     navigator.clipboard.writeText(text);
   }
+
+  function downloadtxt() {
+    const trimmedText = text.trim();
+    const element = document.createElement("a");
+    const file = new Blob([trimmedText], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = "transcription.txt";
+    document.body.appendChild(element); // required for this to work in FireFox
+    element.click();
+  }
 </script>
 
 <div
@@ -15,9 +25,15 @@
     <div
       class="bg-gray-100 text-xs font-medium p-2 w-fit rounded-md flex gap-2"
     >
-      <a class="">Download .txt</a>
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <!-- svelte-ignore a11y_missing_attribute -->
+      <a class="cursor-pointer" onclick={downloadtxt}>Download .txt</a>
       <p>|</p>
-      <a href="#" onclick={copyToClipboard}>Copy</a>
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_missing_attribute -->
+      <a class="cursor-pointer" onclick={copyToClipboard}>Copy</a>
     </div>
   </div>
   {text}
