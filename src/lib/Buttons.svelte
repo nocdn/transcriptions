@@ -36,7 +36,7 @@
     onclick={() => {
       onButtonClick("submit");
     }}
-    class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#ECF7ED] hover:text-green-950 hover:outline-1 hover:outline-dashed hover:outline-[#3d8549]"
+    class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85]"
   >
     Submit
     <div class="hidden md:flex gap-1 font-xs opacity-50 items-center">

@@ -82,7 +82,7 @@
     <div>
       Using:
       <span id="model-identifier" style="font-weight: bold"
-        >whisper-large-v3</span
+        >distil-whisper-large-v3-en</span
       >
     </div>
     {#if files.length > 0}

@@ -16,7 +16,7 @@
       try {
         const formData = new FormData();
         formData.append("file", selectedFiles[0]);
-        formData.append("model", "whisper-large-v3");
+        formData.append("model", "distil-whisper-large-v3-en");
         formData.append("language", "en");
         formData.append("response_format", "text");
 
