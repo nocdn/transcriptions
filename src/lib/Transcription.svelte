@@ -1,6 +1,10 @@
 <script>
   let text = "";
   export { text };
+
+  function copyToClipboard() {
+    navigator.clipboard.writeText(text);
+  }
 </script>
 
 <div
@@ -13,7 +17,7 @@
     >
       <a class="">Download .txt</a>
       <p>|</p>
-      <a href="#">Copy</a>
+      <a href="#" onclick={copyToClipboard}>Copy</a>
     </div>
   </div>
   {text}
