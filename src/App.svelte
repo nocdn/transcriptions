@@ -5,7 +5,7 @@
   import Transcription from "./lib/Transcription.svelte";
 
   let transcriptionText = "";
-  let selectedFiles = [];
+  let selectedFiles = $state([]);
 
   function handleFiles(files) {
     selectedFiles = files;
@@ -30,14 +30,14 @@
         console.error(error);
       }
     } else if (action === "cancel") {
-      selectedFiles = [];
+      selectedFiles = []; // Clear the array
       transcriptionText = "";
     }
   }
 </script>
 
 <main class="flex flex-col gap-3 w-1/2">
-  <Dropzone {handleFiles} />
+  <Dropzone {handleFiles} bind:files={selectedFiles} />
   <div class="flex justify-between">
     <History onButtonClick={handleActions} />
     <Buttons onButtonClick={handleActions} />

@@ -1,15 +1,13 @@
 <script>
-  let { handleFiles } = $props();
-  let files = $state([]);
+  let { handleFiles, files = $bindable([]) } = $props();
+  let inputFileName = $derived(files.length > 0 ? files[0].name : ""); //derive inputFileName
 
-  let inputFileName = $state("");
   function onDrop(event) {
     event.preventDefault();
     files = event.dataTransfer.files;
     handleFiles(files);
     event.currentTarget.classList.remove("dragover");
-    console.log(`Dropped file: ${files[0].name}`);
-    inputFileName = files[0].name;
+    console.log(`Dropped file: ${files[0]?.name}`);
   }
 
   function calculateFileSizeColor(size) {
@@ -25,6 +23,7 @@
   function onSelect(event) {
     files = event.target.files;
     handleFiles(files);
+    console.log(`Selected file: ${files[0].name}`);
   }
 
   function openFileDialog() {
@@ -45,11 +44,11 @@
   class="drop-zone"
   role="button"
   tabindex="0"
-  on:click={openFileDialog}
-  on:drop={onDrop}
-  on:dragover={onDragOver}
-  on:dragleave={onDragLeave}
-  on:keydown={(e) => e.key === "Enter" && openFileDialog()}
+  onclick={openFileDialog}
+  ondrop={onDrop}
+  ondragover={onDragOver}
+  ondragleave={onDragLeave}
+  onkeydown={(e) => e.key === "Enter" && openFileDialog()}
 >
   <div class="drop-zone__prompt">
     <svg
@@ -76,7 +75,7 @@
     id="fileInput"
     class="drop-zone__input"
     accept=".mp3,.mp4,.mpeg,.mpga,.m4a,.wav,.webm"
-    on:change={onSelect}
+    onchange={onSelect}
   />
   <div class="file-info">
     <div>
@@ -85,7 +84,7 @@
         >distil-whisper-large-v3-en</span
       >
     </div>
-    {#if files.length > 0}
+    {#if files?.length > 0}
       {#each Array.from(files) as file}
         <div>
           <span class="font-bold">Selected File: </span>
@@ -98,7 +97,7 @@
         </div>
       {/each}
     {/if}
-    {#if files.length === 0}
+    {#if files?.length === 0}
       <div class="file-size-message">Max file size: 25MB</div>
     {/if}
     <br />
