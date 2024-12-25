@@ -1,6 +1,8 @@
 <script>
   let { onButtonClick } = $props();
 
+  let loading = $state(false);
+
   onkeydown = (event) => {
     if (event.key === "Enter" && event.metaKey) {
       console.log("cmd+enter pressed");
@@ -34,6 +36,8 @@
   </button>
   <button
     onclick={() => {
+      loading = true;
+      console.log(loading);
       onButtonClick("submit");
     }}
     class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85]"

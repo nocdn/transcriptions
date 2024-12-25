@@ -7,6 +7,8 @@
   let transcriptionText = $state("");
   let selectedFiles = $state([]);
 
+  let loading = $state(false);
+
   function handleFiles(files) {
     selectedFiles = files;
   }
@@ -43,5 +45,5 @@
     <History onButtonClick={handleActions} />
     <Buttons onButtonClick={handleActions} />
   </div>
-  <Transcription text={transcriptionText} />
+  <Transcription text={transcriptionText} {loading} />
 </main>
