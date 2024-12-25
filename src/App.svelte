@@ -4,7 +4,7 @@
   import History from "./lib/History.svelte";
   import Transcription from "./lib/Transcription.svelte";
 
-  let transcriptionText = "";
+  let transcriptionText = $state("");
   let selectedFiles = $state([]);
 
   function handleFiles(files) {
@@ -25,6 +25,7 @@
           body: formData,
         });
         const data = await response.json();
+        console.log(data.transcription);
         transcriptionText = data.transcription || "";
       } catch (error) {
         console.error(error);
