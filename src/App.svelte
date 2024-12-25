@@ -16,6 +16,8 @@
   async function handleActions(action) {
     if (action === "submit" && selectedFiles.length > 0) {
       try {
+        loading = true;
+        console.log(loading);
         const formData = new FormData();
         formData.append("file", selectedFiles[0]);
         formData.append("model", "distil-whisper-large-v3-en");
@@ -29,6 +31,7 @@
         const data = await response.json();
         console.log(data.transcription);
         transcriptionText = data.transcription || "";
+        loading = false;
       } catch (error) {
         console.error(error);
       }
