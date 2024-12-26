@@ -33,6 +33,12 @@ logging.basicConfig(
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def save_history_file(filename, content):
+    history_file = Path(f'history/{filename}')
+    history_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(history_file, 'w') as f:
+        f.write(content)
+
 def process_with_gemini(filepath, gemini_model, gemini_prompt):
     try:
         # Configure Gemini API
@@ -79,6 +85,10 @@ def upload_file():
         logging.error('No file selected')
         return jsonify({'error': 'No file selected'}), 400
 
+    logging.info(f"Original filename: {file.filename}")
+    history_filename = file.filename + '.txt'
+    logging.info(f"History filename: {history_filename}")
+
     # Get parameters from request
     process_gemini = request.form.get('process_gemini', 'false').lower() == 'true'
     gemini_model = request.form.get('gemini_model', DEFAULT_GEMINI_MODEL)
@@ -112,6 +122,7 @@ def upload_file():
                 # Process with Gemini
                 logging.info(f'Starting Gemini processing for {filename}')
                 result = process_with_gemini(filepath, gemini_model, gemini_prompt)
+                save_history_file(history_filename, result)
                 response_data = {'transcription': result}
             else:
                 # Process with Groq
@@ -131,7 +142,10 @@ def upload_file():
 
                 transcription = groq_client.audio.transcriptions.create(**transcription_params)
                 transcription_params['file'][1].close()
-                response_data = {'transcription': transcription.text}
+                # removes the first white space from the transcription
+                transcription_no_space = transcription.text[1:]
+                save_history_file(history_filename, transcription_no_space)
+                response_data = {'transcription': transcription_no_space}
 
             # Clean up
             logging.info(f'Deleting file {filepath}')
@@ -158,6 +172,15 @@ def upload_file():
     else:
         logging.error(f'Unsupported file type: {file.filename}')
         return jsonify({'error': 'Unsupported file type'}), 400
+
+@app.route('/api/history/', methods=['GET'])
+def get_history():
+    # return a dictionary of everything from the history folder like this {filename: content}, remove the .txt extension from all the files
+    history = {}
+    for file in os.listdir('history'):
+        with open(f'history/{file}', 'r') as f:
+            history[file.replace('.txt', '')] = f.read()
+    return jsonify(history)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6005)

@@ -38,6 +38,10 @@
     } else if (action === "cancel") {
       selectedFiles = []; // Clear the array
       transcriptionText = "";
+    } else if (action === "history") {
+      const response = await fetch("http://localhost:6005/api/history");
+      const data = await response.json();
+      console.log(data);
     }
   }
 </script>
