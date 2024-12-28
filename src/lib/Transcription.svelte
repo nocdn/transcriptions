@@ -19,7 +19,7 @@
 </script>
 
 <div
-  class="outline-2 outline-dashed outline-gray-300 rounded-md p-4 flex flex-col gap-4 font-sans text-sm font-medium"
+  class="outline-2 outline-dashed outline-gray-300 rounded-md p-4 flex flex-col gap-4 font-sans text-sm font-medium overflow-y-auto mb-6 max-h-full min-h-4"
 >
   <div id="header" class="flex justify-between">
     <div class="bg-gray-100 text-xs font-medium p-2 w-fit rounded-md">
@@ -62,5 +62,7 @@
       <a class="cursor-pointer" onclick={copyToClipboard}>Copy</a>
     </div>
   </div>
-  {text}
+  <p>
+    {text}
+  </p>
 </div>

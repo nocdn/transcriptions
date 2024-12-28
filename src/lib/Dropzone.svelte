@@ -116,9 +116,8 @@
 <style>
   .drop-zone {
     width: 100%;
-    /* max-width: 60%; */
-    min-height: 200px;
-    padding: 25px;
+    height: 14rem;
+    padding: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
