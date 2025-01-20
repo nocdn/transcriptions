@@ -65,7 +65,7 @@
   <Transcription text={transcriptionText} {loading} />
 
   <button
-    onclick={toggleDrawer}
+    onmousedown={toggleDrawer}
     aria-label="Settings"
     class="border w-fit dark:border-gray-500 rounded-md px-2.5 py-2 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300 absolute top-3 right-3"
   >
@@ -90,3 +90,16 @@
     </svg>
   </button>
 </main>
+{#if isOpen}
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
+    class="fixed inset-0 bg-black/50 grid place-items-center"
+    onmousedown={toggleDrawer}
+  >
+    <div
+      class="motion-opacity-in-70 motion-translate-y-in-[95%] motion-blur-in-sm"
+    >
+      <Settings {isOpen} />
+    </div>
+  </div>
+{/if}

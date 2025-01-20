@@ -10,26 +10,20 @@
   }
 </script>
 
-<div class="fixed inset-0 z-10 isolate pointer-events-none h-screen">
-  <!-- Overlay -->
-  <!-- <div
-    id="settings-overlay"
-    class="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 {isOpen
-      ? 'opacity-100 pointer-events-auto'
-      : 'opacity-0'}"
-    on:click={closeDrawer}
-    on:keydown={(e) => e.key === "Escape" && closeDrawer()}
-    tabindex="0"
-    aria-label="Close settings"
-  ></div> -->
-
-  <!-- Drawer -->
-  <div
-    id="settings-drawer"
-    class="fixed bottom-0 left-0 right-0 w-full h-[80vh] bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out rounded-t-xl overflow-y-auto {isOpen
-      ? 'translate-y-0 pointer-events-auto'
-      : 'translate-y-full'}"
-  >
-    <!-- Your drawer content here -->
-  </div>
+<div class="w-fit h-fit bg-white rounded-md z-60">
+  <h2>Model Selection:</h2>
+  <select class="w-full h-fit">
+    <option value="distil-whisper-large-v3-en"
+      >distil-whisper-large-v3-en</option
+    >
+    <option value="whisper-large-v3-turbo">whisper-large-v3-turbo</option>
+    <option value="whisper-large-v3-en">whisper-large-v3-en</option>
+    <option value="gemini-2.0-flash-exp">gemini-2.0-flash-exp</option>
+    <option value="gemini-1.5-flash-latest">gemini-1.5-flash-002</option>
+    <option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b</option>
+    <option value="gemini-1.5-pro-002">gemini-1.5-pro-002</option>
+    <option value="accounts/fireworks/models/whisper-v3-turbo"
+      >fireworks/whisper-v3-turbo</option
+    >
+  </select>
 </div>
