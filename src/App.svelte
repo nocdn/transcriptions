@@ -1,3 +1,4 @@
+<!-- App.svelte -->
 <script>
   import Dropzone from "./lib/Dropzone.svelte";
   import Buttons from "./lib/Buttons.svelte";
@@ -17,7 +18,6 @@
     if (action === "submit" && selectedFiles.length > 0) {
       try {
         loading = true;
-        console.log(loading);
         const formData = new FormData();
         formData.append("file", selectedFiles[0]);
         formData.append("model", "distil-whisper-large-v3-en");
@@ -48,10 +48,7 @@
   let isOpen = $state(false);
   function toggleDrawer() {
     isOpen = !isOpen;
-    console.log("toggleDrawer");
   }
-
-  let secondDrawerOpen = $state(false);
 </script>
 
 <main
@@ -89,17 +86,8 @@
       />
     </svg>
   </button>
+  {#if isOpen}
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <Settings close={() => (isOpen = false)} />
+  {/if}
 </main>
-{#if isOpen}
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div
-    class="fixed inset-0 bg-black/50 grid place-items-center"
-    onmousedown={toggleDrawer}
-  >
-    <div
-      class="motion-opacity-in-70 motion-translate-y-in-[95%] motion-blur-in-sm"
-    >
-      <Settings {isOpen} />
-    </div>
-  </div>
-{/if}
