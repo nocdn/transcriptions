@@ -1,7 +1,10 @@
 <script>
+  // @ts-nocheck
+
   import { Info } from "lucide-svelte";
   import { Zap } from "lucide-svelte";
   import { Languages } from "lucide-svelte";
+  import { ChevronRight } from "lucide-svelte";
 
   let { close } = $props();
 
@@ -10,6 +13,9 @@
     advancedChecked = !advancedChecked;
     console.log("Advanced checked:", advancedChecked);
   }
+
+  // 1: plain text, 2: sections, 3: json
+  let selectedFormat = $state("1");
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -26,6 +32,7 @@
       class="text-2xl font-semibold mb-4 dark:text-white flex justify-between"
     >
       Settings
+
       <label class="inline-flex items-center cursor-pointer">
         <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300"
           >Advanced</span
@@ -247,6 +254,224 @@
             <Languages size={15} />
           </div>
         </div>
+      </div>
+      {#if advancedChecked}
+        <fieldset class="space-y-4">
+          <legend class="text-sm font-medium leading-none text-foreground">
+            Response format
+          </legend>
+          <div
+            role="radiogroup"
+            aria-required="false"
+            dir="ltr"
+            class="flex flex-wrap gap-2"
+            tabindex="0"
+            style="outline: none;"
+          >
+            <div
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+            >
+              <div class="flex items-center gap-2">
+                <!-- svelte-ignore a11y_consider_explicit_label -->
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={selectedFormat === "1"}
+                  data-state={selectedFormat === "1" ? "checked" : "unchecked"}
+                  value="1"
+                  class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
+                  id="response-format-plaintext"
+                  tabindex={selectedFormat === "1" ? "0" : "-1"}
+                  data-radix-collection-item=""
+                  onmousedown={() => (selectedFormat = "1")}
+                >
+                  {#if selectedFormat === "1"}
+                    <span
+                      data-state="checked"
+                      class="flex items-center justify-center text-current"
+                    >
+                      <svg
+                        width="6"
+                        height="6"
+                        viewBox="0 0 6 6"
+                        fill="currentcolor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="3" cy="3" r="3"></circle>
+                      </svg>
+                    </span>
+                  {/if}
+                </button>
+                <label
+                  class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  for="response-format-plaintext"
+                >
+                  Plain text
+                </label>
+              </div>
+            </div>
+
+            <div
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+            >
+              <div class="flex items-center gap-2">
+                <!-- svelte-ignore a11y_consider_explicit_label -->
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={selectedFormat === "2"}
+                  data-state={selectedFormat === "2" ? "checked" : "unchecked"}
+                  value="2"
+                  class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
+                  id="response-format-sections"
+                  tabindex={selectedFormat === "2" ? "0" : "-1"}
+                  data-radix-collection-item=""
+                  onmousedown={() => (selectedFormat = "2")}
+                >
+                  {#if selectedFormat === "2"}
+                    <span
+                      data-state="checked"
+                      class="flex items-center justify-center text-current"
+                    >
+                      <svg
+                        width="6"
+                        height="6"
+                        viewBox="0 0 6 6"
+                        fill="currentcolor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="3" cy="3" r="3"></circle>
+                      </svg>
+                    </span>
+                  {/if}
+                </button>
+                <label
+                  class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  for="response-format-sections"
+                >
+                  Sections
+                </label>
+              </div>
+            </div>
+
+            <div
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+            >
+              <div class="flex items-center gap-2">
+                <!-- svelte-ignore a11y_consider_explicit_label -->
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={selectedFormat === "3"}
+                  data-state={selectedFormat === "3" ? "checked" : "unchecked"}
+                  value="3"
+                  class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
+                  id="response-format-json"
+                  tabindex={selectedFormat === "3" ? "0" : "-1"}
+                  data-radix-collection-item=""
+                  onmousedown={() => (selectedFormat = "3")}
+                >
+                  {#if selectedFormat === "3"}
+                    <span
+                      data-state="checked"
+                      class="flex items-center justify-center text-current"
+                    >
+                      <svg
+                        width="6"
+                        height="6"
+                        viewBox="0 0 6 6"
+                        fill="currentcolor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="3" cy="3" r="3"></circle>
+                      </svg>
+                    </span>
+                  {/if}
+                </button>
+                <label
+                  class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  for="response-format-json"
+                >
+                  JSON
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      {/if}
+      <div class="w-full flex justify-between">
+        <button
+          class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487]"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+            />
+          </svg>
+          Cancel
+        </button>
+        <button
+          class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85] shadow-sm"
+        >
+          Save
+          <div class="hidden md:flex gap-1 font-xs opacity-50 items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-command"
+            >
+              <path
+                d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"
+              ></path>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-plus"
+            >
+              <path d="M5 12h14"></path>
+              <path d="M12 5v14"></path>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-corner-down-left"
+            >
+              <polyline points="9 10 4 15 9 20"></polyline>
+              <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
+            </svg>
+          </div>
+        </button>
       </div>
     </container>
   </div>
