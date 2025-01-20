@@ -46,8 +46,15 @@
   }
 
   let isOpen = $state(false);
-  function toggleDrawer() {
+
+  function toggleDrawer(e) {
+    e.stopPropagation();
     isOpen = !isOpen;
+  }
+
+  function handleSettingsChange(settings) {
+    console.log("settings changed: ", settings);
+    isOpen = false;
   }
 </script>
 
@@ -88,6 +95,6 @@
   </button>
   {#if isOpen}
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <Settings close={() => (isOpen = false)} />
+    <Settings close={handleSettingsChange} />
   {/if}
 </main>

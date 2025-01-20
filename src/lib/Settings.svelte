@@ -16,6 +16,24 @@
 
   // 1: plain text, 2: sections, 3: json
   let selectedFormat = $state("1");
+  let modelValue = $state("whisper-large-v3");
+  let promptValue = $state("");
+  let languageValue = $state("en");
+
+  function handleCancel() {
+    close();
+  }
+
+  function handleSave() {
+    let settings = {
+      advancedChecked,
+      selectedFormat,
+      modelValue,
+      promptValue,
+      languageValue,
+    };
+    close(settings);
+  }
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -58,6 +76,7 @@
           <select
             class="peer inline-flex w-full cursor-pointer appearance-none items-center rounded-lg border border-input bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 has-[option[disabled]:checked]:text-muted-foreground h-9 pe-8 ps-3"
             id="model-select"
+            bind:value={modelValue}
             ><option value="whisper-large-v3">whisper-large-v3</option><option
               value="whisper-large-v3-turbo">whisper-large-v3-turbo</option
             ><option value="distil-whisper-large-v3-en"
@@ -234,6 +253,7 @@
           class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
           id="prompt-input"
           placeholder="Enter any prompt, or leave blank"
+          bind:value={promptValue}
         ></textarea>
       </div>
       <div class="space-y-2">
@@ -247,6 +267,7 @@
             id="language-input"
             placeholder="en"
             type="language"
+            bind:value={languageValue}
           />
           <div
             class="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50"
@@ -402,6 +423,7 @@
       <div class="w-full flex justify-between">
         <button
           class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487]"
+          onmousedown={handleCancel}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -421,6 +443,7 @@
         </button>
         <button
           class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85] shadow-sm"
+          onmousedown={handleSave}
         >
           Save
           <div class="hidden md:flex gap-1 font-xs opacity-50 items-center">
