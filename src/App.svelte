@@ -14,15 +14,36 @@
     selectedFiles = files;
   }
 
+  let isOpen = $state(false);
+
+  function toggleDrawer(e) {
+    e.stopPropagation();
+    isOpen = !isOpen;
+  }
+
+  let settings = $state({
+    advancedChecked: false,
+    selectedFormat: "1",
+    modelValue: "whisper-large-v3",
+    promptValue: "",
+    languageValue: "en",
+  });
+
+  function handleSettingsChange(settings) {
+    console.log("settings changed: ", settings);
+    settings = settings;
+    isOpen = false;
+  }
+
   async function handleActions(action) {
     if (action === "submit" && selectedFiles.length > 0) {
       try {
         loading = true;
         const formData = new FormData();
         formData.append("file", selectedFiles[0]);
-        formData.append("model", "distil-whisper-large-v3-en");
-        formData.append("language", "en");
-        formData.append("response_format", "text");
+        formData.append("model", settings.modelValue);
+        formData.append("language", settings.languageValue);
+        formData.append("response_format", settings.selectedFormat);
 
         const response = await fetch("http://localhost:6005/api/upload", {
           method: "POST",
@@ -43,18 +64,6 @@
       const data = await response.json();
       console.log(data);
     }
-  }
-
-  let isOpen = $state(false);
-
-  function toggleDrawer(e) {
-    e.stopPropagation();
-    isOpen = !isOpen;
-  }
-
-  function handleSettingsChange(settings) {
-    console.log("settings changed: ", settings);
-    isOpen = false;
   }
 </script>
 
