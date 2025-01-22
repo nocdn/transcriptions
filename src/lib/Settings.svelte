@@ -17,10 +17,7 @@
   let geminiModelValue = $state("gemini-2.0-flash-exp");
   let geminiPromptValue = $state("");
 
-  let fireworksModelValue = $state(
-    "accounts/fireworks/models/whisper-v3-turbo"
-  );
-  let fireworksPromptValue = $state("");
+  let fireworksModelValue = $state("fireworks/whisper-v3-turbo");
   let fireworksLanguageValue = $state("en");
 
   let settings = $state({
@@ -35,8 +32,7 @@
       geminiPromptValue: "",
     },
     fireworks: {
-      fireworksModelValue: "accounts/fireworks/models/whisper-v3-turbo",
-      fireworksPromptValue: "",
+      fireworksModelValue: "fireworks/whisper-v3-turbo",
       fireworksLanguageValue: "en",
     },
   });
@@ -65,7 +61,6 @@
       geminiPromptValue = settings.gemini.geminiPromptValue;
 
       fireworksModelValue = settings.fireworks.fireworksModelValue;
-      fireworksPromptValue = settings.fireworks.fireworksPromptValue;
       fireworksLanguageValue = settings.fireworks.fireworksLanguageValue;
     }
   });
@@ -172,7 +167,7 @@
               >gemini-1.5-flash-latest</option
             ><option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b</option
             ><option value="gemini-1.5-pro-002">gemini-1.5-pro-002</option
-            ><option value="accounts/fireworks/models/whisper-v3-turbo"
+            ><option value="fireworks/whisper-v3-turbo"
               >fireworks/whisper-v3-turbo</option
             ></select
           ><span
@@ -378,17 +373,6 @@
         </div>
       {:else if settings.currentModelProvider === "fireworks"}
         <!-- Fireworks -->
-        <div class="space-y-2" style="--ring: 234 89% 74%;">
-          <label
-            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            for="prompt-input">Prompt for fireworks</label
-          ><textarea
-            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
-            id="prompt-input"
-            placeholder="Enter any prompt, or leave blank"
-            bind:value={fireworksPromptValue}
-          ></textarea>
-        </div>
         <div class="space-y-2">
           <label
             class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

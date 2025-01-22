@@ -49,6 +49,9 @@ def save_history_file(filename, content):
         f.write(content)
 
 def process_with_gemini(filepath, gemini_model, gemini_prompt):
+    logging.info(f'Processing with Gemini:')
+    logging.info(f'Model: {gemini_model}')
+    logging.info(f'Prompt: {gemini_prompt}')
     try:
         genai.configure(api_key=GEMINI_API_KEY)
         model = genai.GenerativeModel(gemini_model)
@@ -68,7 +71,12 @@ def process_with_gemini(filepath, gemini_model, gemini_prompt):
         logging.error(f'Error processing with Gemini: {str(e)}')
         raise
 
-def process_with_fireworks(filepath, model="accounts/fireworks/models/whisper-v3-turbo"):
+def process_with_fireworks(filepath, model="fireworks/whisper-v3-turbo", language="en"):
+    logging.info(f'Processing with Fireworks:')
+    logging.info(f'Model: {model}')
+    logging.info(f'Language: {language}')
+    correct_model = model.replace("fireworks/", "")
+    logging.info(f'Using correct model name: {correct_model}')
     try:
         with open(filepath, "rb") as f:
             response = requests.post(
@@ -76,9 +84,10 @@ def process_with_fireworks(filepath, model="accounts/fireworks/models/whisper-v3
                 headers={"Authorization": f"Bearer {FIREWORKS_API_KEY}"},
                 files={"file": f},
                 data={
-                    "model": model,
+                    "model": correct_model,
                     "temperature": "0",
-                    "vad_model": "silero"
+                    "vad_model": "silero",
+                    "language": language
                 }
             )
             
@@ -91,7 +100,11 @@ def process_with_fireworks(filepath, model="accounts/fireworks/models/whisper-v3
         logging.error(f'Error processing with Fireworks: {str(e)}')
         raise
 
-def process_with_groq(filepath, model, language=None, prompt=None):
+def process_with_groq(filepath, model, language="en", prompt=""):
+    logging.info(f'Processing with Groq:')
+    logging.info(f'Model: {model}')
+    logging.info(f'Language: {language}')
+    logging.info(f'Prompt: {prompt}')
     try:
         transcription_params = {
             'file': (os.path.basename(filepath), open(filepath, 'rb')),
@@ -132,18 +145,6 @@ def upload_file():
         file.save(filepath)
 
         try:
-            # provider = request.form.get('model_provider', 'groq')
-            # model = request.form.get('model')
-            # language = request.form.get('language')
-            # prompt = request.form.get('prompt')
-
-            # if provider == 'gemini':
-            #     result = process_with_gemini(filepath, model or DEFAULT_GEMINI_MODEL, 
-            #                               prompt or DEFAULT_GEMINI_PROMPT)
-            # elif provider == 'fireworks':
-            #     result = process_with_fireworks(filepath, model)
-            # else:
-            #     result = process_with_groq(filepath, model, language, prompt)
             provider = request.form.get('currentModelProvider')
             if provider == 'groq':
                 model = request.form.get('groqModelValue')
@@ -153,12 +154,13 @@ def upload_file():
             elif provider == 'gemini':
                 model = request.form.get('geminiModelValue')
                 prompt = request.form.get('geminiPromptValue')
+                if prompt == '':
+                    prompt = DEFAULT_GEMINI_PROMPT
                 result = process_with_gemini(filepath, model, prompt)
             elif provider == 'fireworks':
                 model = request.form.get('fireworksModelValue')
-                prompt = request.form.get('fireworksPromptValue')
                 language = request.form.get('fireworksLanguageValue')
-                result = process_with_fireworks(filepath, model)
+                result = process_with_fireworks(filepath, model, language)
 
 
             save_history_file(f"{filename}.txt", result)
