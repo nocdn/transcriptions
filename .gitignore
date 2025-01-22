@@ -25,5 +25,6 @@ dist-ssr
 .venv/
 
 # project specific
-/src/api/history/*
+/backend/history/*
+/backend/uploads/*
 .env

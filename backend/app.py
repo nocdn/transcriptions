@@ -1,4 +1,3 @@
-# App.py
 import os
 import logging
 from flask import Flask, request, jsonify, send_from_directory
@@ -23,6 +22,12 @@ DEFAULT_GEMINI_MODEL = os.environ.get('DEFAULT_GEMINI_MODEL', 'gemini-2.0-flash-
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 FIREWORKS_API_KEY = os.environ.get('FIREWORKS_API_KEY')
+
+
+if load_dotenv():
+    print("Loaded .env file")
+else:
+    print("Failed to load .env file.")
 
 # Initialize Flask app
 app = Flask(__name__)

@@ -1,4 +1,3 @@
-<!-- Settings.svelte -->
 <script>
   import { onMount } from "svelte";
   import { Info } from "lucide-svelte";

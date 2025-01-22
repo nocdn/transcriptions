@@ -1,4 +1,3 @@
-<!-- App.svelte -->
 <script>
   import Dropzone from "./lib/Dropzone.svelte";
   import Buttons from "./lib/Buttons.svelte";
