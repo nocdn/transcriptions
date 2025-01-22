@@ -9,17 +9,20 @@ import google.generativeai as genai
 from pathlib import Path
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Configuration
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'m4a', 'mp3', 'wav'}
-DEFAULT_GEMINI_PROMPT = "Transcribe this exactly, DO NOT add timestamps, diarize the speakers, call the Interviewer just 'Interviewer' and the other person 'Candidate'"
-DEFAULT_GEMINI_MODEL = 'models/gemini-1.5-flash'
+UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', 'uploads')
+ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS', 'm4a,mp3,wav').split(',')
+DEFAULT_GEMINI_PROMPT = os.environ.get('DEFAULT_GEMINI_PROMPT', '')
+DEFAULT_GEMINI_MODEL = os.environ.get('DEFAULT_GEMINI_MODEL', 'gemini-2.0-flash-exp')
 
 # API Keys
-GROQ_API_KEY = "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"
-GEMINI_API_KEY = "AIzaSyAS6cTzjhTN4SArysE3bFxch7ZJn4hGxg8"
-FIREWORKS_API_KEY = "cQlEpRGJbif9YQMGwGH8HWmUG1kkbBalQAumk6KMjLm9tFTF"
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+FIREWORKS_API_KEY = os.environ.get('FIREWORKS_API_KEY')
 
 # Initialize Flask app
 app = Flask(__name__)

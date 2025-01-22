@@ -26,3 +26,4 @@ dist-ssr
 
 # project specific
 /src/api/history/*
+.env
