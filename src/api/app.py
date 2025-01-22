@@ -1,3 +1,4 @@
+# App.py
 import os
 import logging
 from flask import Flask, request, jsonify, send_from_directory
@@ -16,8 +17,8 @@ DEFAULT_GEMINI_PROMPT = "Transcribe this exactly, DO NOT add timestamps, diarize
 DEFAULT_GEMINI_MODEL = 'models/gemini-1.5-flash'
 
 # API Keys
-GROQ_API_KEY = "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"
-GEMINI_API_KEY = "AIzaSyAnuQo93v9AIkxoD3tOYPuT9uEOiaMqmNQ"
+GROQ_API_KEY = "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"
+GEMINI_API_KEY = "AIzaSyAS6cTzjhTN4SArysE3bFxch7ZJn4hGxg8"
 FIREWORKS_API_KEY = "cQlEpRGJbif9YQMGwGH8HWmUG1kkbBalQAumk6KMjLm9tFTF"
 
 # Initialize Flask app
@@ -128,18 +129,34 @@ def upload_file():
         file.save(filepath)
 
         try:
-            provider = request.form.get('model_provider', 'groq')
-            model = request.form.get('model')
-            language = request.form.get('language')
-            prompt = request.form.get('prompt')
+            # provider = request.form.get('model_provider', 'groq')
+            # model = request.form.get('model')
+            # language = request.form.get('language')
+            # prompt = request.form.get('prompt')
 
-            if provider == 'gemini':
-                result = process_with_gemini(filepath, model or DEFAULT_GEMINI_MODEL, 
-                                          prompt or DEFAULT_GEMINI_PROMPT)
-            elif provider == 'fireworks':
-                result = process_with_fireworks(filepath, model)
-            else:  # default to groq
+            # if provider == 'gemini':
+            #     result = process_with_gemini(filepath, model or DEFAULT_GEMINI_MODEL, 
+            #                               prompt or DEFAULT_GEMINI_PROMPT)
+            # elif provider == 'fireworks':
+            #     result = process_with_fireworks(filepath, model)
+            # else:
+            #     result = process_with_groq(filepath, model, language, prompt)
+            provider = request.form.get('currentModelProvider')
+            if provider == 'groq':
+                model = request.form.get('groqModelValue')
+                prompt = request.form.get('groqPromptValue')
+                language = request.form.get('groqLanguageValue')
                 result = process_with_groq(filepath, model, language, prompt)
+            elif provider == 'gemini':
+                model = request.form.get('geminiModelValue')
+                prompt = request.form.get('geminiPromptValue')
+                result = process_with_gemini(filepath, model, prompt)
+            elif provider == 'fireworks':
+                model = request.form.get('fireworksModelValue')
+                prompt = request.form.get('fireworksPromptValue')
+                language = request.form.get('fireworksLanguageValue')
+                result = process_with_fireworks(filepath, model)
+
 
             save_history_file(f"{filename}.txt", result)
             return jsonify({'transcription': result})

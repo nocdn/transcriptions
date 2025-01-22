@@ -8,7 +8,7 @@
   let { close, settings } = $props();
 
   let advancedChecked = $state(false);
-  // let selectedFormat = $state("1");
+  let selectedFormat = $state("1");
 
   let groqModelValue = $state("whisper-large-v3");
   let groqPromptValue = $state("");
@@ -404,7 +404,6 @@
                   value="1"
                   class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
                   id="response-format-plaintext"
-                  tabindex={selectedFormat === "1" ? "0" : "-1"}
                   data-radix-collection-item=""
                   onmousedown={() => (selectedFormat = "1")}
                 >
@@ -447,7 +446,6 @@
                   value="2"
                   class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
                   id="response-format-sections"
-                  tabindex={selectedFormat === "2" ? "0" : "-1"}
                   data-radix-collection-item=""
                   onmousedown={() => (selectedFormat = "2")}
                 >
@@ -490,7 +488,6 @@
                   value="3"
                   class="aspect-square size-4 rounded-full border border-input shadow-sm shadow-black/5 outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground after:absolute after:inset-0"
                   id="response-format-json"
-                  tabindex={selectedFormat === "3" ? "0" : "-1"}
                   data-radix-collection-item=""
                   onmousedown={() => (selectedFormat = "3")}
                 >

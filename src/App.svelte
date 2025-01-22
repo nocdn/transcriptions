@@ -23,14 +23,6 @@
     isOpen = !isOpen;
   }
 
-  // let settings = $state({
-  //   selectedFormat: "1",
-  //   modelProvider: "groq",
-  //   modelValue: "whisper-large-v3",
-  //   promptValue: "",
-  //   languageValue: "en",
-  // });
-
   let settings = $state({
     currentModelProvider: "groq",
     groq: {
@@ -68,20 +60,35 @@
       try {
         loading = true;
         const formData = new FormData();
-        if (settings.modelValue.includes("gemini")) {
-          console.log("using gemini");
-          formData.append("model_provider", "gemini");
-        } else if (settings.modelValue.includes("fireworks")) {
-          formData.append("model_provider", "fireworks");
-          console.log("using fireworks");
+        formData.append("currentModelProvider", settings.currentModelProvider);
+        if (settings.currentModelProvider === "groq") {
+          formData.append("groqModelValue", settings.groq.groqModelValue);
+          formData.append("groqPromptValue", settings.groq.groqPromptValue);
+          formData.append("groqLanguageValue", settings.groq.groqLanguageValue);
+        } else if (settings.currentModelProvider === "gemini") {
+          formData.append("geminiModelValue", settings.gemini.geminiModelValue);
+          formData.append(
+            "geminiPromptValue",
+            settings.gemini.geminiPromptValue
+          );
+        } else if (settings.currentModelProvider === "fireworks") {
+          formData.append(
+            "fireworksModelValue",
+            settings.fireworks.fireworksModelValue
+          );
+          formData.append(
+            "fireworksPromptValue",
+            settings.fireworks.fireworksPromptValue
+          );
+          formData.append(
+            "fireworksLanguageValue",
+            settings.fireworks.fireworksLanguageValue
+          );
         } else {
-          formData.append("model_provider", "groq");
+          formData.append("error", "Invalid model provider");
         }
-        console.log(formData);
         formData.append("file", selectedFiles[0]);
-        formData.append("model", settings.modelValue);
-        formData.append("language", settings.languageValue);
-
+        console.log(formData);
         const response = await fetch("http://localhost:6005/api/upload", {
           method: "POST",
           body: formData,
