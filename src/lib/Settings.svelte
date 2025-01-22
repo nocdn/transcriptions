@@ -29,6 +29,15 @@
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       currentModelProvider = settings.currentModelProvider;
+      if (currentModelProvider === "groq") {
+        generalModelValue = settings.groq.groqModelValue;
+      }
+      if (currentModelProvider === "gemini") {
+        generalModelValue = settings.gemini.geminiModelValue;
+      }
+      if (currentModelProvider === "fireworks") {
+        generalModelValue = settings.fireworks.fireworksModelValue;
+      }
 
       groqModelValue = settings.groq.groqModelValue;
       groqPromptValue = settings.groq.groqPromptValue;

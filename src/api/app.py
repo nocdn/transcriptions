@@ -15,7 +15,7 @@ load_dotenv()
 
 # Configuration
 UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', 'uploads')
-ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS', 'm4a,mp3,wav').split(',')
+ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS', '{m4a, mp3, wav}')
 DEFAULT_GEMINI_PROMPT = os.environ.get('DEFAULT_GEMINI_PROMPT', '')
 DEFAULT_GEMINI_MODEL = os.environ.get('DEFAULT_GEMINI_MODEL', 'gemini-2.0-flash-exp')
 
