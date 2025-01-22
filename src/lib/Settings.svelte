@@ -1,37 +1,90 @@
+<!-- Settings.svelte -->
 <script>
-  // @ts-nocheck
-
+  import { onMount } from "svelte";
   import { Info } from "lucide-svelte";
   import { Zap } from "lucide-svelte";
   import { Languages } from "lucide-svelte";
-  import { ChevronRight } from "lucide-svelte";
 
-  let { close } = $props();
+  let { close, settings } = $props();
 
   let advancedChecked = $state(false);
+  // let selectedFormat = $state("1");
+
+  let groqModelValue = $state("whisper-large-v3");
+  let groqPromptValue = $state("");
+  let groqLanguageValue = $state("en");
+
+  let geminiModelValue = $state("gemini-2.0-flash-exp");
+  let geminiPromptValue = $state("");
+
+  let fireworksModelValue = $state(
+    "accounts/fireworks/models/whisper-v3-turbo"
+  );
+  let fireworksPromptValue = $state("");
+  let fireworksLanguageValue = $state("en");
+
+  // Load settings from localStorage on mount
+  onMount(() => {
+    const savedSettings = localStorage.getItem("transcription-settings");
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      currentModelProvider = settings.currentModelProvider;
+
+      groqModelValue = settings.groq.groqModelValue;
+      groqPromptValue = settings.groq.groqPromptValue;
+      groqLanguageValue = settings.groq.groqLanguageValue;
+
+      geminiModelValue = settings.gemini.geminiModelValue;
+      geminiPromptValue = settings.gemini.geminiPromptValue;
+
+      fireworksModelValue = settings.fireworks.fireworksModelValue;
+      fireworksPromptValue = settings.fireworks.fireworksPromptValue;
+      fireworksLanguageValue = settings.fireworks.fireworksLanguageValue;
+    }
+  });
+
   function handleAdvancedCheckbox() {
     advancedChecked = !advancedChecked;
-    console.log("Advanced checked:", advancedChecked);
   }
-
-  // 1: plain text, 2: sections, 3: json
-  let selectedFormat = $state("1");
-  let modelValue = $state("whisper-large-v3");
-  let promptValue = $state("");
-  let languageValue = $state("en");
 
   function handleCancel() {
     close();
   }
 
+  let generalModelValue = $state("whisper-large-v3");
+  function handleModelChange() {
+    if (generalModelValue.includes("gemini")) {
+      currentModelProvider = "gemini";
+    } else if (generalModelValue.includes("fireworks")) {
+      currentModelProvider = "fireworks";
+    } else {
+      currentModelProvider = "groq";
+    }
+  }
+
+  let currentModelProvider = $state("groq");
+
   function handleSave() {
-    let settings = {
-      advancedChecked,
-      selectedFormat,
-      modelValue,
-      promptValue,
-      languageValue,
+    const settings = {
+      currentModelProvider,
+      groq: {
+        groqModelValue,
+        groqPromptValue,
+        groqLanguageValue,
+      },
+      gemini: {
+        geminiModelValue,
+        geminiPromptValue,
+      },
+      fireworks: {
+        fireworksModelValue,
+        fireworksPromptValue,
+        fireworksLanguageValue,
+      },
     };
+
+    // Save to localStorage
+    localStorage.setItem("transcription-settings", JSON.stringify(settings));
     close(settings);
   }
 </script>
@@ -76,7 +129,8 @@
           <select
             class="peer inline-flex w-full cursor-pointer appearance-none items-center rounded-lg border border-input bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 has-[option[disabled]:checked]:text-muted-foreground h-9 pe-8 ps-3"
             id="model-select"
-            bind:value={modelValue}
+            bind:value={generalModelValue}
+            onchange={handleModelChange}
             ><option value="whisper-large-v3">whisper-large-v3</option><option
               value="whisper-large-v3-turbo">whisper-large-v3-turbo</option
             ><option value="distil-whisper-large-v3-en"
@@ -245,37 +299,85 @@
           </tbody>
         </table>
       </div>
-      <div class="space-y-2" style="--ring: 234 89% 74%;">
-        <label
-          class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          for="prompt-input">Prompt</label
-        ><textarea
-          class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
-          id="prompt-input"
-          placeholder="Enter any prompt, or leave blank"
-          bind:value={promptValue}
-        ></textarea>
-      </div>
-      <div class="space-y-2">
-        <label
-          class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          for="language-input">Language</label
-        >
-        <div class="relative">
-          <input
-            class="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
-            id="language-input"
-            placeholder="en"
-            type="language"
-            bind:value={languageValue}
-          />
-          <div
-            class="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50"
+      {#if currentModelProvider === "groq"}
+        <div class="space-y-2" style="--ring: 234 89% 74%;">
+          <label
+            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="prompt-input">Prompt for groq</label
+          ><textarea
+            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+            id="prompt-input"
+            placeholder="Enter any prompt, or leave blank"
+            bind:value={groqPromptValue}
+          ></textarea>
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="language-input">Language for groq</label
           >
-            <Languages size={15} />
+          <div class="relative">
+            <input
+              class="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
+              id="language-input"
+              placeholder="en"
+              type="language"
+              bind:value={groqLanguageValue}
+            />
+            <div
+              class="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50"
+            >
+              <Languages size={15} />
+            </div>
           </div>
         </div>
-      </div>
+      {:else if currentModelProvider === "gemini"}
+        <!-- Gemini -->
+        <div class="space-y-2" style="--ring: 234 89% 74%;">
+          <label
+            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="prompt-input">Prompt for gemini</label
+          ><textarea
+            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+            id="prompt-input"
+            placeholder="Enter any prompt, or leave blank"
+            bind:value={geminiPromptValue}
+          ></textarea>
+        </div>
+      {:else if currentModelProvider === "fireworks"}
+        <!-- Fireworks -->
+        <div class="space-y-2" style="--ring: 234 89% 74%;">
+          <label
+            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="prompt-input">Prompt for fireworks</label
+          ><textarea
+            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+            id="prompt-input"
+            placeholder="Enter any prompt, or leave blank"
+            bind:value={fireworksPromptValue}
+          ></textarea>
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="language-input">Language for fireworks</label
+          >
+          <div class="relative">
+            <input
+              class="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
+              id="language-input"
+              placeholder="en"
+              type="language"
+              bind:value={fireworksLanguageValue}
+            />
+            <div
+              class="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-muted-foreground/80 peer-disabled:opacity-50"
+            >
+              <Languages size={15} />
+            </div>
+          </div>
+        </div>
+      {/if}
       {#if advancedChecked}
         <fieldset class="space-y-4">
           <legend class="text-sm font-medium leading-none text-foreground">

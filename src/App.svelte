@@ -6,6 +6,8 @@
   import Transcription from "./lib/Transcription.svelte";
   import Settings from "./lib/Settings.svelte";
 
+  import { onMount } from "svelte";
+
   let transcriptionText = $state("");
   let selectedFiles = $state([]);
   let loading = $state(false);
@@ -21,17 +23,43 @@
     isOpen = !isOpen;
   }
 
+  // let settings = $state({
+  //   selectedFormat: "1",
+  //   modelProvider: "groq",
+  //   modelValue: "whisper-large-v3",
+  //   promptValue: "",
+  //   languageValue: "en",
+  // });
+
   let settings = $state({
-    advancedChecked: false,
-    selectedFormat: "1",
-    modelValue: "whisper-large-v3",
-    promptValue: "",
-    languageValue: "en",
+    currentModelProvider: "groq",
+    groq: {
+      groqModelValue: "whisper-large-v3",
+      groqPromptValue: "",
+      groqLanguageValue: "en",
+    },
+    gemini: {
+      geminiModelValue: "gemini-2.0-flash-exp",
+      geminiPromptValue: "",
+    },
+    fireworks: {
+      fireworksModelValue: "accounts/fireworks/models/whisper-v3-turbo",
+      fireworksPromptValue: "",
+      fireworksLanguageValue: "en",
+    },
   });
 
-  function handleSettingsChange(settings) {
-    console.log("settings changed: ", settings);
-    settings = settings;
+  onMount(() => {
+    const savedSettings = localStorage.getItem("transcription-settings");
+    if (savedSettings) {
+      settings = { ...settings, ...JSON.parse(savedSettings) };
+    }
+  });
+
+  function handleSettingsChange(newSettings) {
+    if (newSettings) {
+      settings = { ...settings, ...newSettings };
+    }
     isOpen = false;
   }
 
@@ -40,10 +68,19 @@
       try {
         loading = true;
         const formData = new FormData();
+        if (settings.modelValue.includes("gemini")) {
+          console.log("using gemini");
+          formData.append("model_provider", "gemini");
+        } else if (settings.modelValue.includes("fireworks")) {
+          formData.append("model_provider", "fireworks");
+          console.log("using fireworks");
+        } else {
+          formData.append("model_provider", "groq");
+        }
+        console.log(formData);
         formData.append("file", selectedFiles[0]);
         formData.append("model", settings.modelValue);
         formData.append("language", settings.languageValue);
-        formData.append("response_format", settings.selectedFormat);
 
         const response = await fetch("http://localhost:6005/api/upload", {
           method: "POST",
