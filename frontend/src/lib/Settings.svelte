@@ -13,7 +13,7 @@
   let groqPromptValue = $state("");
   let groqLanguageValue = $state("en");
 
-  let geminiModelValue = $state("gemini-2.0-flash-exp");
+  let geminiModelValue = $state("gemini-2.0-flash");
   let geminiPromptValue = $state("");
 
   let fireworksModelValue = $state("fireworks/whisper-v3-turbo");
@@ -27,7 +27,7 @@
       groqLanguageValue: "en",
     },
     gemini: {
-      geminiModelValue: "gemini-2.0-flash-exp",
+      geminiModelValue: "gemini-2.0-flash",
       geminiPromptValue: "",
     },
     fireworks: {
@@ -161,11 +161,10 @@
               value="whisper-large-v3-turbo">whisper-large-v3-turbo</option
             ><option value="distil-whisper-large-v3-en"
               >distil-whisper-large-v3</option
-            ><option value="gemini-2.0-flash-exp">gemini-2.0-flash-exp</option
-            ><option value="gemini-1.5-flash-latest"
-              >gemini-1.5-flash-latest</option
-            ><option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b</option
-            ><option value="gemini-1.5-pro-002">gemini-1.5-pro-002</option
+            ><option value="gemini-2.0-flash">gemini-2.0-flash</option><option
+              value="gemini-2.0-flash-lite-preview-02-05"
+              >gemini-2.0-flash-lite</option
+            ><option value="gemini-2.0-pro-exp-02-05">gemini-2.0-pro</option
             ><option value="fireworks/whisper-v3-turbo"
               >fireworks/whisper-v3-turbo</option
             ></select
@@ -257,39 +256,6 @@
                 >13%</td
               >
             </tr>
-
-            <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
-            >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
-                >gemini-1.5-flash</td
-              >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >$6.75</td
-              >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >9.6%</td
-              >
-            </tr>
-            <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
-            >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
-                >gemini-1.5-pro</td
-              >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >$112.50</td
-              >
-              <td
-                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >5.5%</td
-              >
-            </tr>
             <tr
               class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
@@ -299,13 +265,46 @@
               >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >~$0.00</td
+                >$0.063</td
               >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
-                >~4.5%</td
+                >?</td
               >
             </tr>
+            <tr
+              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
+                >gemini-2.0-flash-lite</td
+              >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+                >$0.00675</td
+              >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+                >?</td
+              >
+            </tr>
+            <tr
+              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
+                >gemini-2.0-pro</td
+              >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+                >free</td
+              >
+              <td
+                class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+                >?</td
+              >
+            </tr>
+
             <tr
               class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >

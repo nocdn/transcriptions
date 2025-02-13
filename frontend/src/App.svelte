@@ -30,7 +30,7 @@
       groqLanguageValue: "en",
     },
     gemini: {
-      geminiModelValue: "gemini-2.0-flash-exp",
+      geminiModelValue: "gemini-2.0-flash",
       geminiPromptValue: "",
     },
     fireworks: {
