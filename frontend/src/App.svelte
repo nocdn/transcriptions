@@ -10,6 +10,7 @@
   let transcriptionText = $state("");
   let selectedFiles = $state([]);
   let loading = $state(false);
+  let rateLimited = $state(false);
 
   function handleFiles(files) {
     selectedFiles = files;
@@ -58,6 +59,7 @@
     if (action === "submit" && selectedFiles.length > 0) {
       try {
         loading = true;
+        rateLimited = false;
         const formData = new FormData();
         formData.append("currentModelProvider", settings.currentModelProvider);
         if (settings.currentModelProvider === "groq") {
@@ -92,6 +94,13 @@
           method: "POST",
           body: formData,
         });
+
+        if (response.status === 429) {
+          rateLimited = true;
+          loading = false;
+          return;
+        }
+
         const data = await response.json();
         console.log(data.transcription);
         transcriptionText = data.transcription || "";
@@ -118,7 +127,7 @@
     <History onButtonClick={handleActions} />
     <Buttons onButtonClick={handleActions} />
   </div>
-  <Transcription text={transcriptionText} {loading} />
+  <Transcription text={transcriptionText} {loading} {rateLimited} />
 
   <button
     onmousedown={toggleDrawer}

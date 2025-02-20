@@ -1,6 +1,8 @@
 import os
 import logging
 from flask import Flask, request, jsonify, send_from_directory
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from groq import Groq
@@ -32,6 +34,13 @@ else:
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["10 per day"],
+    storage_uri="memory://",
+)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Initialize clients
@@ -133,6 +142,7 @@ def process_with_groq(filepath, model, language="en", prompt=""):
         raise
 
 @app.route('/api/upload', methods=['POST'])
+@limiter.limit("10 per day")
 def upload_file():
     try:
         if 'file' not in request.files:
