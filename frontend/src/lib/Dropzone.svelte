@@ -13,7 +13,7 @@
   function calculateFileSizeColor(size) {
     if (size < 1024 * 1024 * 10) {
       return "text-green-600";
-    } else if (size < 1024 * 1024 * 20) {
+    } else if (size < 1024 * 1024 * 40) {
       return "text-yellow-600";
     } else {
       return "text-red-600";
@@ -98,7 +98,7 @@
       {/each}
     {/if}
     {#if files?.length === 0}
-      <div class="file-size-message">Max file size: 25MB</div>
+      <div class="file-size-message">Max file size: 40MB</div>
     {/if}
     <br />
     <div class="format-chip-container">
