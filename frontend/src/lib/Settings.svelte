@@ -118,7 +118,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
-  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center"
+  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center motion-opacity-in-0 motion-duration-300"
   onmousedown={close}
 >
   <div
