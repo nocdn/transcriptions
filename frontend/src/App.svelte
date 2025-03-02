@@ -132,7 +132,7 @@
   <button
     onmousedown={toggleDrawer}
     aria-label="Settings"
-    class="border w-fit dark:border-gray-500 rounded-md px-2.5 py-2 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300 absolute top-3 right-3"
+    class="border border-gray-200 w-fit dark:border-gray-500 rounded-md min-w-10 min-h-10 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300 absolute top-3 right-3 grid place-items-center cursor-pointer"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

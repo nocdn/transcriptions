@@ -1,7 +1,7 @@
 <div class="flex gap-3">
   <div class="flex items-center gap-4">
     <span class="opacity-50 text-xs"></span><button
-      class="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-input dark:border-gray-500 bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 flex gap-3"
+      class="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-input dark:border-gray-500 bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 flex gap-3 cursor-pointer"
       type="button"
       aria-haspopup="dialog"
       aria-expanded="false"
@@ -25,7 +25,7 @@
     >
   </div>
   <button
-    class="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-600 dark:hover:bg-slate-200 px-4 py-2 h-10 flex gap-3 text-primary-foreground"
+    class="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-gray-600 dark:hover:bg-slate-200 px-4 py-2 h-10 flex gap-3 text-primary-foreground cursor-pointer"
     ><div>Submit</div>
     <div class="hidden md:flex gap-1 font-xs opacity-50 items-center">
       <svg

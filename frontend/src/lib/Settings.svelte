@@ -153,7 +153,7 @@
         >
         <div class="relative">
           <select
-            class="peer inline-flex w-full cursor-pointer appearance-none items-center rounded-lg border border-input bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 has-[option[disabled]:checked]:text-muted-foreground h-9 pe-8 ps-3"
+            class="peer inline-flex w-full cursor-pointer appearance-none items-center rounded-lg border border-gray-200 border-input bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 has-[option[disabled]:checked]:text-muted-foreground h-9 pe-8 ps-3"
             id="model-select"
             bind:value={generalModelValue}
             onchange={handleModelChange}
@@ -186,11 +186,11 @@
           >
         </div>
       </div>
-      <div class="overflow-hidden border rounded-lg">
+      <div class="overflow-hidden border border-gray-300 rounded-lg">
         <table class="w-full caption-bottom text-sm">
           <thead class="bg-[#f9f9fa]">
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted bg-muted/50"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted bg-muted/50"
             >
               <th
                 class="px-3 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:w-px [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 h-9 py-2"
@@ -209,7 +209,7 @@
           </thead>
           <tbody class="[&_tr:last-child]:border-0">
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -225,7 +225,7 @@
               >
             </tr>
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -241,7 +241,7 @@
               >
             </tr>
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -257,7 +257,7 @@
               >
             </tr>
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -273,7 +273,7 @@
               >
             </tr>
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -289,7 +289,7 @@
               >
             </tr>
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium"
@@ -306,7 +306,7 @@
             </tr>
 
             <tr
-              class="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
             >
               <td
                 class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-medium flex items-center gap-2"
@@ -330,7 +330,7 @@
             class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             for="prompt-input">Prompt for groq</label
           ><textarea
-            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+            class="flex min-h-[80px] w-full rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
             id="prompt-input"
             placeholder="Enter any prompt, or leave blank"
             bind:value={groqPromptValue}
@@ -343,7 +343,7 @@
           >
           <div class="relative">
             <input
-              class="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
+              class="flex h-9 w-full rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
               id="language-input"
               placeholder="en"
               type="language"
@@ -363,7 +363,7 @@
             class="text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             for="prompt-input">Prompt for gemini</label
           ><textarea
-            class="flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+            class="flex min-h-[80px] w-full rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
             id="prompt-input"
             placeholder="Enter any prompt, or leave blank"
             bind:value={geminiPromptValue}
@@ -378,7 +378,7 @@
           >
           <div class="relative">
             <input
-              class="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
+              class="flex h-9 w-full rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
               id="language-input"
               placeholder="en"
               type="language"
@@ -406,7 +406,7 @@
             style="outline: none;"
           >
             <div
-              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-gray-200 border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
             >
               <div class="flex items-center gap-2">
                 <!-- svelte-ignore a11y_consider_explicit_label -->
@@ -448,7 +448,7 @@
             </div>
 
             <div
-              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-gray-200 border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
             >
               <div class="flex items-center gap-2">
                 <!-- svelte-ignore a11y_consider_explicit_label -->
@@ -490,7 +490,7 @@
             </div>
 
             <div
-              class="relative flex flex-col items-start gap-4 rounded-lg border border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
+              class="relative flex flex-col items-start gap-4 rounded-lg border border-gray-200 border-input p-3 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring"
             >
               <div class="flex items-center gap-2">
                 <!-- svelte-ignore a11y_consider_explicit_label -->
@@ -535,13 +535,13 @@
       {/if}
       <div class="w-full flex justify-between">
         <button
-          class="text-sm font-medium flex gap-3 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487]"
+          class="text-sm font-medium flex gap-3 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487] cursor-pointer"
           onmousedown={handleCancel}
         >
           Cancel
         </button>
         <button
-          class="text-sm font-medium flex gap-4 items-center border border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85] shadow-sm"
+          class="text-sm font-medium flex gap-4 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85] shadow-sm cursor-pointer"
           onmousedown={handleSave}
         >
           Save
