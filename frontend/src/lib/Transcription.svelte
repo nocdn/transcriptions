@@ -21,10 +21,10 @@
 </script>
 
 <div
-  class="outline-2 outline-dashed outline-gray-300 rounded-md p-4 flex flex-col gap-4 font-sans text-sm font-medium overflow-y-auto mb-6 max-h-full min-h-4"
+  class="outline-2 outline-dashed outline-gray-300 rounded-md p-4 flex flex-col gap-4 font-geist text-sm font-medium overflow-y-auto mb-6 max-h-full min-h-6"
 >
   <div id="header" class="flex justify-between">
-    <div class="bg-gray-100 text-xs font-medium p-2 w-fit rounded-md">
+    <div class="bg-gray-100 text-xs font-medium p-2 px-3 w-fit rounded-md">
       {#if loading}
         <Spinner />
       {:else if rateLimited}
@@ -34,7 +34,7 @@
       {/if}
     </div>
     <div
-      class="bg-gray-100 text-xs font-medium p-2 w-fit rounded-md flex gap-2"
+      class="bg-gray-100 text-xs font-medium p-2 px-3 w-fit rounded-md flex gap-2"
     >
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
