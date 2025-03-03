@@ -4,6 +4,9 @@
   import History from "./lib/History.svelte";
   import Transcription from "./lib/Transcription.svelte";
   import Settings from "./lib/Settings.svelte";
+  import Button from "./lib/Button.svelte";
+
+  import { Command } from "lucide-svelte";
 
   import { onMount } from "svelte";
 

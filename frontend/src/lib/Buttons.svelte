@@ -16,7 +16,7 @@
     onclick={() => {
       onButtonClick("cancel");
     }}
-    class="text-sm font-medium flex gap-3 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-1 hover:outline-dashed hover:outline-[#b8040487] cursor-pointer"
+    class="text-sm font-medium flex gap-3 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#F6EAEA] hover:text-red-800 hover:outline-[#b8040487] cursor-pointer"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@
       console.log(loading);
       onButtonClick("submit");
     }}
-    class="text-sm font-medium flex gap-4 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-1 hover:outline-dashed hover:outline-[#3d3f85] cursor-pointer"
+    class="text-sm font-medium flex gap-4 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-[#EEF2FF] hover:text-blue-800 hover:outline-[#3d3f85] cursor-pointer"
   >
     Submit
     <div class="hidden md:flex gap-1 font-xs opacity-50 items-center">

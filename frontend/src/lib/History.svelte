@@ -6,7 +6,7 @@
   onclick={() => {
     onButtonClick("history");
   }}
-  class="text-sm font-medium flex gap-3 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300 cursor-pointer"
+  class="text-sm font-medium flex gap-3 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 hover:bg-gray-100 hover:text-gray-700 hover:outline-gray-300 cursor-pointer"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
