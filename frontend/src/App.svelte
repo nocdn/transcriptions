@@ -112,8 +112,9 @@
         console.error(error);
       }
     } else if (action === "cancel") {
-      selectedFiles = []; // Clear the array
-      transcriptionText = "";
+      // selectedFiles = [];
+      // transcriptionText = "";
+      window.location.reload();
     } else if (action === "history") {
       const response = await fetch("http://localhost:6005/api/history");
       const data = await response.json();
