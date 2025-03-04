@@ -1,22 +1,29 @@
 # Transcriptions
 
-This is a full stack web app built with Svelte, Tailwind, Flask that can be self hosted, and offers a simple way to transcribe audio files.
+> a full stack web app built with Svelte, Tailwind, Flask that can be self hosted with docker compose, and offers a simple way to transcribe audio files
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- Supports 3 model providers: Groq (Whisper models), Google (Gemini multimodal) and FireworksAI (Whisper model)
-- BYOK - Bring your own keys
-- Provides a transcription history
-- Saves settings between wesite visits
+### Features
+
+- Supports 4 model providers:
+  - `Groq` (inferencing OpenAI Whisper) - cheapest, medium speed, medium accuracy
+  - `Google` (through gemini audio multimodality) - cheapest/medium price, slower speed, high accuracy
+  - `FireworksAI` (inferencing OpenAI Whisper) - medium price, fastest speed, semi-high accuracy
+  - `ElevenLabs` (in-house Scribe model) - most expensive, slowest speed, highest accuracy
+- Saves a transcription history
+- Saves settings between frontend visits
 - Supports multiple audio file formats
 - Supports multiple languages
 - Supports multiple speaker diarization
+- Can return word level or segment level timestamps
+- BYOK - Bring your own keys
 
-## Setup
+### Setup
 
-### Option 1: Local Development
+#### Option 1: Local Development
 
-#### Prerequisites
+##### Prerequisites
 
 You must have the following installed on your machine:
 
@@ -29,38 +36,41 @@ Clone the repository
 git clone https://github.com/nocdn/transcription-svelte.git
 ```
 
-Install the dependencies
+Install the frontend dependencies
 
 ```bash
-cd transcription-svelte
+cd transcription-svelte/frontend
 npm install
 ```
 
-Configure your API keys and settings by copying the `.env.example` file to `.env` and filling it in with your own values.
-
-```bash
-cp .env.example .env
-```
-
-Start the front-end development server
+From the same directory, start the front-end development server
 
 ```bash
 npm run dev
 ```
 
+For the backend:
+
+Configure your API keys and settings by copying the `.env.example` file to `.env` and filling it in with your own values.
+
+```bash
+cd transcription-svelte/backend
+cp .env.example .env
+```
+
 In a new terminal, start the back-end development server
 
 ```bash
-cd transcription-svelte/src/api
+cd transcription-svelte/backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python app.py
 ```
 
-### Option 2: Docker Setup
+#### Option 2: Docker Setup
 
-#### Prerequisites
+##### Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
@@ -84,4 +94,8 @@ Build and start the Docker containers
 docker-compose up -d --build
 ```
 
-The application will be available at http://localhost:4090 or http://[your-ip]:4090
+depending on where you host it, the application will be available at http://localhost:4090 or http://[your-ip]:4090
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
