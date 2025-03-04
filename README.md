@@ -30,20 +30,20 @@ You must have the following installed on your machine:
 - [npm](https://www.npmjs.com/)
 - [Python](https://www.python.org/)
 
-Clone the repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/nocdn/transcription-svelte.git
 ```
 
-Install the frontend dependencies
+Install the frontend dependencies:
 
 ```bash
 cd transcription-svelte/frontend
 npm install
 ```
 
-From the same directory, start the front-end development server
+From the same directory, start the front-end development server:
 
 ```bash
 npm run dev
@@ -58,7 +58,7 @@ cd transcription-svelte/backend
 cp .env.example .env
 ```
 
-In a new terminal, start the back-end development server
+In a new terminal, start the back-end development server:
 
 ```bash
 cd transcription-svelte/backend
@@ -88,13 +88,33 @@ Configure your API keys and settingsby copying the `.env.example` file to `.env`
 cp .env.example .env
 ```
 
-Build and start the Docker containers
+Build and start the Docker containers.
 
 ```bash
 docker-compose up -d --build
 ```
 
-depending on where you host it, the application will be available at http://localhost:4090 or http://[your-ip]:4090
+depending on where you host it, the application will be available at http://localhost:4090 or http://[your-machine-ip]:4090
+
+##### How to update if using docker
+
+Stop the containers:
+
+```bash
+docker compose down
+```
+
+Pull the latest changes:
+
+```bash
+git pull
+```
+
+Build and start the Docker containers again:
+
+```bash
+docker-compose up -d --build
+```
 
 ### License
 
