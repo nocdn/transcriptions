@@ -93,7 +93,7 @@
         }
         formData.append("file", selectedFiles[0]);
         console.log(formData);
-        const response = await fetch("http://localhost:6005/api/upload", {
+        const response = await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });

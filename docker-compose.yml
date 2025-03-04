@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+      - uploads_data:/app/uploads
+      - history_data:/app/history
+    env_file:
+      - .env
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6005/api/history"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4090:4090"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  uploads_data:
+  history_data:
