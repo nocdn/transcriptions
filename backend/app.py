@@ -69,7 +69,7 @@ def process_with_gemini(filepath, gemini_model, gemini_prompt):
     try:
         genai.configure(api_key=GEMINI_API_KEY)
         model = genai.GenerativeModel(gemini_model)
-        
+
         audio_file = genai.upload_file(filepath)
         result = model.generate_content([audio_file, gemini_prompt],
             safety_settings={
@@ -78,7 +78,7 @@ def process_with_gemini(filepath, gemini_model, gemini_prompt):
                 HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
                 HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
             })
-        
+
         audio_file.delete()
         return result.text
     except Exception as e:
@@ -104,12 +104,12 @@ def process_with_fireworks(filepath, model="fireworks/whisper-v3-turbo", languag
                     "language": language
                 }
             )
-            
+
         if response.status_code == 200:
             return response.json().get('text', '')
         else:
             raise Exception(f"Fireworks API error: {response.status_code} - {response.text}")
-            
+
     except Exception as e:
         logging.error(f'Error processing with Fireworks: {str(e)}')
         raise
@@ -135,7 +135,7 @@ def process_with_groq(filepath, model, language="en", prompt=""):
 
         transcription = groq_client.audio.transcriptions.create(**transcription_params)
         transcription_params['file'][1].close()
-        
+
         return transcription.text.lstrip()
     except Exception as e:
         logging.error(f'Error processing with Groq: {str(e)}')
@@ -190,13 +190,29 @@ def upload_file():
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/history', methods=['GET'])
+@limiter.limit("1000 per day")
 def get_history():
     try:
-        history = {}
+        history = []
         history_path = Path('history')
         if history_path.exists():
             for file in history_path.glob('*.txt'):
-                history[file.stem] = file.read_text()
+                creation_time = file.stat().st_ctime
+                from datetime import datetime
+                formatted_date = datetime.fromtimestamp(creation_time).strftime('%d-%m-%Y')
+                # extract the file extension from the stem (which might contain original file extension)
+                filename_parts = file.stem.split('.')
+                file_extension = filename_parts[-1] if len(filename_parts) > 1 else ""
+                # get filename without extension for the new key
+                filename_no_ext = '.'.join(filename_parts[:-1]) if len(filename_parts) > 1 else file.stem
+
+                history.append({
+                    'filename': file.stem,
+                    'transcription': file.read_text(),
+                    'date': formatted_date,
+                    'fileExtension': file_extension,
+                    'fileNameNoExt': filename_no_ext
+                })
         return jsonify(history)
     except Exception as e:
         logging.error(f'Error getting history: {str(e)}')
@@ -206,5 +222,5 @@ if __name__ == '__main__':
     # Create required directories
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs('history', exist_ok=True)
-    
+
     app.run(host='0.0.0.0', port=6005)
