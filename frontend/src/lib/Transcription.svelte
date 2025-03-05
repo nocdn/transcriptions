@@ -1,9 +1,25 @@
 <script>
   let { transcriptionText, fileName } = $props();
-  import { Save, Copy, ArrowRight, Check } from "lucide-svelte";
+  import { Save, Copy, ArrowRight, Check, ArrowUp } from "lucide-svelte";
   import Button from "./Button.svelte";
 
   let copying = $state(false);
+  let scrollableContent = $state();
+  let showingScrollButton = $state(false);
+
+  $effect(() => {
+    if (!scrollableContent) return;
+
+    const handleScroll = () => {
+      showingScrollButton = scrollableContent.scrollTop > 20;
+    };
+    handleScroll();
+    scrollableContent.addEventListener("scroll", handleScroll);
+
+    return () => {
+      scrollableContent.removeEventListener("scroll", handleScroll);
+    };
+  });
 </script>
 
 {#snippet saveIcon()}
@@ -18,7 +34,7 @@
   <Check size={15} strokeWidth={3} color="darkgreen" />
 {/snippet}
 
-<transcription class="w-full h-full flex flex-col gap-4">
+<transcription class="w-full h-full flex flex-col gap-4 relative">
   {#if transcriptionText !== ""}
     <p
       class="text-xl font-medium pl-2 pt-3 font-geist inline-flex gap-4 items-center motion-opacity-in-0"
@@ -65,8 +81,19 @@
         />
       {/if}
     </p>
-    <p class="text-md font-geist-mono pl-2">
-      {transcriptionText}
-    </p>
+    <div class="overflow-y-scroll h-full" bind:this={scrollableContent}>
+      <p class="text-md font-geist-mono pl-2 pr-8">
+        {transcriptionText}
+      </p>
+    </div>
+  {/if}
+
+  {#if showingScrollButton}
+    <button
+      class="absolute bottom-4 right-4 rounded-full h-10 w-10 text-sm py-1.5 shadow-sm bg-white border border-gray-200 grid place-content-center text-black hover:bg-gray-50 motion-opacity-in-0 motion-blur-in-sm transition-all"
+      onclick={() => {
+        scrollableContent?.scrollTo({ top: 0, behavior: "smooth" });
+      }}><ArrowUp strokeWidth={2.5} size={20} /></button
+    >
   {/if}
 </transcription>

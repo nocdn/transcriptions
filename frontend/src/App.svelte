@@ -194,8 +194,8 @@
   <Trash2 size={15} />
 {/snippet}
 
-<main class="w-dvw h-dvh grid grid-cols-[24rem_1fr] gap-4 p-4">
-  <column class="flex flex-col gap-3">
+<main class="w-dvw h-dvh grid grid-cols-[24rem_1fr] gap-4">
+  <column class="flex flex-col gap-3 h-dvh pt-4 pl-4 pb-4">
     <p class="text-xl font-medium pl-1 pt-3 font-geist">Transcribe:</p>
     <Dropzone {handleFiles} bind:files={selectedFiles} processing={loading} />
     <div class="flex justify-between items-center">
@@ -259,7 +259,7 @@
       <Settings size={20} />
     </button>
   </column>
-  <column class="flex flex-col gap-3">
+  <column class="flex flex-col gap-3 h-dvh pt-4 pr-1 pb-4">
     <Transcription {transcriptionText} fileName={selectedFiles[0].name} />
   </column>
 </main>
