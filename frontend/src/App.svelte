@@ -1,14 +1,21 @@
 <script>
   import Dropzone from "./lib/Dropzone.svelte";
-  import Buttons from "./lib/Buttons.svelte";
-  import History from "./lib/History.svelte";
-  import Transcription from "./lib/Transcription.svelte";
-  import Settings from "./lib/Settings.svelte";
   import Button from "./lib/Button.svelte";
-
-  import { Command } from "lucide-svelte";
+  import HistoryItem from "./lib/HistoryItem.svelte";
+  import Transcription from "./lib/Transcription.svelte";
+  import SettingsModal from "./lib/SettingsModal.svelte";
+  import Spinner from "./lib/Spinner.svelte";
 
   import { onMount } from "svelte";
+
+  import {
+    Command,
+    Plus,
+    CornerDownLeft,
+    Trash2,
+    Settings,
+    HeartCrack,
+  } from "lucide-svelte";
 
   let transcriptionText = $state("");
   let selectedFiles = $state([]);
@@ -21,9 +28,9 @@
 
   let isOpen = $state(false);
 
-  function toggleDrawer(e) {
-    e.stopPropagation();
+  function toggleDrawer() {
     isOpen = !isOpen;
+    console.log("isOpen", isOpen);
   }
 
   let settings = $state({
@@ -36,19 +43,49 @@
     gemini: {
       geminiModelValue: "gemini-2.0-flash",
       geminiPromptValue: "",
+      geminiLanguageValue: "",
     },
     fireworks: {
-      fireworksModelValue: "accounts/fireworks/models/whisper-v3-turbo",
+      fireworksModelValue: "fireworks/whisper-v3-turbo",
       fireworksPromptValue: "",
       fireworksLanguageValue: "en",
     },
+    elevenLabs: {
+      elevenLabsModelValue: "scribe_v1",
+      elevenLabsPromptValue: "",
+      elevenLabsLanguageValue: "",
+    },
   });
+
+  let history = $state([]);
+  let fetchingHistory = $state(false);
 
   onMount(() => {
     const savedSettings = localStorage.getItem("transcription-settings");
     if (savedSettings) {
-      settings = { ...settings, ...JSON.parse(savedSettings) };
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        // deep merge saved settings with the default settings
+        settings = {
+          ...settings,
+          ...parsedSettings,
+          groq: { ...settings.groq, ...(parsedSettings.groq || {}) },
+          gemini: { ...settings.gemini, ...(parsedSettings.gemini || {}) },
+          fireworks: {
+            ...settings.fireworks,
+            ...(parsedSettings.fireworks || {}),
+          },
+          elevenLabs: {
+            ...settings.elevenLabs,
+            ...(parsedSettings.elevenLabs || {}),
+          },
+        };
+      } catch (error) {
+        console.error("Error parsing saved settings:", error);
+      }
     }
+
+    fetchHistory();
   });
 
   function handleSettingsChange(newSettings) {
@@ -75,6 +112,10 @@
             "geminiPromptValue",
             settings.gemini.geminiPromptValue
           );
+          formData.append(
+            "geminiLanguageValue",
+            settings.gemini.geminiLanguageValue
+          );
         } else if (settings.currentModelProvider === "fireworks") {
           formData.append(
             "fireworksModelValue",
@@ -87,6 +128,19 @@
           formData.append(
             "fireworksLanguageValue",
             settings.fireworks.fireworksLanguageValue
+          );
+        } else if (settings.currentModelProvider === "elevenLabs") {
+          formData.append(
+            "elevenLabsModelValue",
+            settings.elevenLabs.elevenLabsModelValue
+          );
+          formData.append(
+            "elevenLabsPromptValue",
+            settings.elevenLabs.elevenLabsPromptValue
+          );
+          formData.append(
+            "elevenLabsLanguageValue",
+            settings.elevenLabs.elevenLabsLanguageValue
           );
         } else {
           formData.append("error", "Invalid model provider");
@@ -115,51 +169,100 @@
       // selectedFiles = [];
       // transcriptionText = "";
       window.location.reload();
-    } else if (action === "history") {
-      const response = await fetch("http://localhost:6005/api/history");
-      const data = await response.json();
-      console.log(data);
     }
+  }
+
+  async function fetchHistory() {
+    fetchingHistory = true;
+    const response = await fetch("/api/history");
+    const data = await response.json();
+    fetchingHistory = false;
+    history = data;
   }
 </script>
 
-<main
-  class="flex flex-col gap-3 w-1/2 min-h-screen px-4 overflow-x-hidden h-full pb-5"
->
-  <Dropzone {handleFiles} bind:files={selectedFiles} />
-  <div class="flex justify-between">
-    <History onButtonClick={handleActions} />
-    <Buttons onButtonClick={handleActions} />
+{#snippet cmdPlusIcon()}
+  <div class="flex gap-1 items-center opacity-60">
+    <Command size={12} />
+    <Plus size={11} />
+    <CornerDownLeft size={12} />
   </div>
-  <Transcription text={transcriptionText} {loading} {rateLimited} />
+{/snippet}
 
-  <button
-    onmousedown={toggleDrawer}
-    aria-label="Settings"
-    class="border border-gray-200 w-fit dark:border-gray-500 rounded-md min-w-10 min-h-10 hover:bg-gray-100 hover:text-gray-700 hover:outline-1 hover:outline-dashed hover:outline-gray-300 absolute top-3 right-3 grid place-items-center cursor-pointer"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="size-5"
+{#snippet cancelIcon()}
+  <Trash2 size={15} />
+{/snippet}
+
+<main class="w-dvw h-dvh grid grid-cols-[24rem_1fr] gap-4 p-4">
+  <column class="flex flex-col gap-3">
+    <p class="text-xl font-medium pl-1 pt-3 font-geist">Transcribe:</p>
+    <Dropzone {handleFiles} bind:files={selectedFiles} processing={loading} />
+    <div class="flex justify-between items-center">
+      <Button
+        label="Cancel"
+        onClick={() => handleActions("cancel")}
+        icon={cancelIcon}
+        iconPosition="leading"
+        hoverColor="#F6EAEA"
+        class="rounded-xl py-2.5"
+      />
+      <Button
+        label="Submit"
+        onClick={() => {
+          console.log("submit");
+          handleActions("submit");
+        }}
+        icon={cmdPlusIcon}
+        iconPosition="trailing"
+        hoverColor="#EEF2FF"
+        class="rounded-xl py-2.5"
+      />
+    </div>
+    <p class="text-xl font-medium pl-1 pt-5 font-geist">History:</p>
+    <historyContainer
+      class="border border-gray-200 rounded-xl flex flex-col gap-0.5"
     >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
-      />
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-      />
-    </svg>
-  </button>
-  {#if isOpen}
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <Settings close={handleSettingsChange} />
-  {/if}
+      {#if !fetchingHistory}
+        {#if history.length > 0}
+          {#each history as item}
+            <HistoryItem
+              title={item.filename}
+              date={item.date}
+              fileExtension={item.fileExtension}
+              fileNameNoExt={item.fileNameNoExt}
+              transcription={item.transcription}
+            />
+          {/each}
+        {:else}
+          <p
+            class="text-md font-semibold font-mono text-gray-400 p-3 pl-4 inline-flex items-center gap-3 motion-opacity-in-0"
+          >
+            no file history <HeartCrack size={16} strokeWidth={2.5} />
+          </p>
+        {/if}
+      {:else if fetchingHistory}
+        <p
+          class="text-md font-semibold font-mono text-gray-400 p-3 inline-flex items-center gap-2 motion-opacity-in-0"
+        >
+          <Spinner class="opacity-50" /> fetching history
+        </p>
+      {/if}
+    </historyContainer>
+    <button
+      onclick={() => {
+        console.log("clicked settings");
+        toggleDrawer();
+      }}
+      class="rounded-lg w-13 h-12 mt-auto border border-gray-200 grid place-content-center hover:bg-gray-50 cursor-pointer"
+    >
+      <Settings size={20} />
+    </button>
+  </column>
+  <column class="flex flex-col gap-3">
+    <Transcription {transcriptionText} fileName={selectedFiles[0].name} />
+  </column>
 </main>
+
+{#if isOpen}
+  <SettingsModal close={handleSettingsChange} />
+{/if}

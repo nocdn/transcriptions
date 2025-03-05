@@ -1,13 +1,28 @@
 <script>
-  let { handleFiles, files = $bindable([]) } = $props();
+  import { FilePlus2, FileAudio } from "lucide-svelte";
+  import Spinner from "./Spinner.svelte";
+
+  let {
+    handleFiles,
+    files = $bindable([]),
+    maxSize = "40MB",
+    processing = false,
+  } = $props();
   let inputFileName = $derived(files.length > 0 ? files[0].name : ""); //derive inputFileName
+
+  // Add additional variable for styles
+  let dropzoneClass =
+    "rounded-2xl bg-[#FAFAFA] border-2 border-dotted border-gray-300 min-h-48 w-full flex flex-col justify-center items-center gap-5 p-4 text-center cursor-pointer";
 
   function onDrop(event) {
     event.preventDefault();
-    files = event.dataTransfer.files;
-    handleFiles(files);
+    const droppedFiles = event.dataTransfer.files;
+    if (droppedFiles.length > 0) {
+      files = droppedFiles;
+      handleFiles(files);
+      console.log(`Dropped file: ${files[0]?.name}`);
+    }
     event.currentTarget.classList.remove("dragover");
-    console.log(`Dropped file: ${files[0]?.name}`);
   }
 
   function calculateFileSizeColor(size) {
@@ -20,19 +35,38 @@
     }
   }
 
+  // Format file size to human-readable format
+  function formatFileSize(bytes) {
+    if (bytes === 0) return "0 Bytes";
+
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  }
+
   function onSelect(event) {
-    files = event.target.files;
-    handleFiles(files);
-    console.log(`Selected file: ${files[0].name}`);
+    const selectedFiles = event.target.files;
+    if (selectedFiles.length > 0) {
+      files = selectedFiles;
+      handleFiles(files);
+      console.log(`Selected file: ${files[0].name}`);
+    }
   }
 
   function openFileDialog() {
-    document.getElementById("fileInput").click();
+    if (!processing) {
+      document.getElementById("fileInput").click();
+    }
   }
 
   function onDragOver(event) {
     event.preventDefault();
-    event.currentTarget.classList.add("dragover");
+    if (!processing) {
+      event.currentTarget.classList.add("dragover");
+    }
   }
 
   function onDragLeave(event) {
@@ -40,147 +74,54 @@
   }
 </script>
 
-<div
-  class="drop-zone"
-  role="button"
+<!-- Hidden file input element -->
+<input
+  id="fileInput"
+  type="file"
+  accept="audio/*,video/*"
+  onchange={onSelect}
+  class="hidden"
+/>
+
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<dropzone
   tabindex="0"
   onclick={openFileDialog}
   ondrop={onDrop}
   ondragover={onDragOver}
   ondragleave={onDragLeave}
   onkeydown={(e) => e.key === "Enter" && openFileDialog()}
+  class="{dropzoneClass} {processing ? 'pointer-events-none opacity-80' : ''}"
 >
-  <div class="drop-zone__prompt">
-    <svg
-      class="svg-upload"
-      width="30"
-      height="30"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z"
-        fill="#5046E5"
-      />
-      <path
-        d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z"
-        fill="#5046E5"
-      />
-    </svg>
-  </div>
-  <input
-    type="file"
-    name="file"
-    id="fileInput"
-    class="drop-zone__input"
-    accept=".mp3,.mp4,.mpeg,.mpga,.m4a,.wav,.webm"
-    onchange={onSelect}
-  />
-  <div class="file-info">
-    <div>
-      Using:
-      <span id="model-identifier" style="font-weight: bold"
-        >distil-whisper-large-v3-en</span
-      >
-    </div>
-    {#if files?.length > 0}
-      {#each Array.from(files) as file}
-        <div>
-          <span class="font-bold">Selected File: </span>
-          {file.name}
-          <span
-            class={calculateFileSizeColor(file.size)}
-            style="font-weight: bold"
-            >({(file.size / 1024 / 1024).toFixed(2)} MB)</span
-          >
-        </div>
-      {/each}
+  {#if !processing}
+    {#if files.length > 0}
+      <div class="bg-white rounded-xl p-3 border border-gray-200">
+        <FileAudio size={20} />
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <p class="text-md font-medium">{files[0].name}</p>
+        <p class="font-[450] {calculateFileSizeColor(files[0].size)}">
+          {formatFileSize(files[0].size)}
+        </p>
+        <p class="opacity-50 text-sm mt-1">Click to choose a different file</p>
+      </div>
+    {:else}
+      <div class="bg-white rounded-xl p-3 border border-gray-200">
+        <FilePlus2 size={20} />
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <p class="text-md font-medium">Click to upload, or drag and drop</p>
+        <p class="opacity-50 font-[450]">
+          Audio or video files up to {maxSize} each
+        </p>
+      </div>
     {/if}
-    {#if files?.length === 0}
-      <div class="file-size-message">Max file size: 40MB</div>
-    {/if}
-    <br />
-    <div class="format-chip-container">
-      <div class="format-chip">mp3</div>
-      <div class="format-chip">mp4</div>
-      <div class="format-chip">mpeg</div>
-      <div class="format-chip">mpga</div>
-      <div class="format-chip">m4a</div>
-      <div class="format-chip">wav</div>
-      <div class="format-chip">webm</div>
+  {:else}
+    <div class="flex flex-col gap-0.5 items-center justify-center">
+      <Spinner />
+      <p class="text-md font-medium motion-opacity-in-0">Transcribing...</p>
+      <p class="text-sm font-geist-mono opacity-40">please be patient</p>
     </div>
-  </div>
-</div>
-
-<style>
-  .drop-zone {
-    width: 100%;
-    height: 14rem;
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background-color: white;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    position: relative;
-    transition: border-color 0.3s ease;
-    cursor: pointer;
-  }
-
-  .drop-zone.dragover {
-    border-color: #2196f3;
-    background-color: rgba(33, 150, 243, 0.05);
-  }
-
-  .drop-zone:hover {
-    border: 2px dashed light;
-  }
-
-  .drop-zone__prompt {
-    font-size: 1.2em;
-    color: #666;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .drop-zone__input {
-    display: none;
-  }
-
-  .file-info {
-    font-size: 0.9em;
-    text-align: center;
-    color: #888;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .format-chip-container {
-    display: flex;
-    gap: 0.25rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .format-chip {
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    background-color: #eee;
-    color: #666;
-    font-size: 0.8rem;
-  }
-
-  .svg-upload {
-    outline: 2px dashed #ccc;
-    border-radius: 50%;
-    padding: 0.35rem;
-  }
-</style>
+  {/if}
+</dropzone>

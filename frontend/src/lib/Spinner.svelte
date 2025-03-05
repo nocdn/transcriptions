@@ -1,5 +1,9 @@
+<script>
+  let { class: className = "" } = $props();
+</script>
+
 <svg
-  class="motion-opacity-in-0 motion-blur-in-md motion-duration-100"
+  class="motion-opacity-in-0 motion-duration-100 {className}"
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 100 100"
   preserveAspectRatio="xMidYMid"

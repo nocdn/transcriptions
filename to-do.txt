@@ -1,6 +1,3 @@
-- remake all buttons to be more consistent, and be one component
-- add ElevenLabs Scribe, and also to the dropdown and table
-- add a min width to the container
-- implement a history modal
 - add tooltip explaining that the spark icon means fastest model
-- change file size warning dynamically based on the provider selected
+- change file size limit and warning dynamically based on the provider selected
+- delete history items functionality
