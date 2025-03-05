@@ -25,6 +25,9 @@ GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 FIREWORKS_API_KEY = os.environ.get('FIREWORKS_API_KEY')
 
+# Rate limits
+TRANSCRIPTION_RATE_LIMIT = os.environ.get('TRANSCRIPTION_RATE_LIMIT', '10 per day')
+HISTORY_RATE_LIMIT = os.environ.get('HISTORY_RATE_LIMIT', '1000 per day')
 
 if load_dotenv():
     print("Loaded .env file")
@@ -142,7 +145,7 @@ def process_with_groq(filepath, model, language="en", prompt=""):
         raise
 
 @app.route('/api/upload', methods=['POST'])
-@limiter.limit("10 per day")
+@limiter.limit(TRANSCRIPTION_RATE_LIMIT)
 def upload_file():
     try:
         if 'file' not in request.files:
@@ -190,7 +193,7 @@ def upload_file():
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/history', methods=['GET'])
-@limiter.limit("1000 per day")
+@limiter.limit(HISTORY_RATE_LIMIT)
 def get_history():
     try:
         history = []
@@ -219,7 +222,7 @@ def get_history():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    # Create required directories
+    # create required directories
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs('history', exist_ok=True)
 
