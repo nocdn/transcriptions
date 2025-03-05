@@ -100,7 +100,13 @@
         <FileAudio size={20} />
       </div>
       <div class="flex flex-col gap-0.5">
-        <p class="text-md font-medium">{files[0].name}</p>
+        <div class="flex justify-center">
+          <p
+            class="text-md font-medium break-words hyphens-auto line-clamp-2 leading-tight max-w-4/5 flex"
+          >
+            {files[0].name}
+          </p>
+        </div>
         <p class="font-[450] {calculateFileSizeColor(files[0].size)}">
           {formatFileSize(files[0].size)}
         </p>

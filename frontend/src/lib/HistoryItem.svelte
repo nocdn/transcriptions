@@ -3,17 +3,23 @@
   import { Eye, ArrowDownToLine } from "lucide-svelte";
 </script>
 
-<historyItem class="bg-white p-2 flex gap-4 items-center rounded-xl">
+<historyItem
+  class="bg-white p-2 flex gap-4 items-center rounded-xl hover:bg-gray-50"
+>
   <p
-    class="w-16 h-12 grid place-content-center rounded-lg bg-gray-100 font-geist-mono font-semibold text-center"
+    class="w-16 min-h-12 grid place-content-center rounded-lg bg-gray-100 font-geist-mono font-semibold text-center mb-auto"
   >
     {fileExtension}
   </p>
-  <div class="flex flex-col gap-0.75">
-    <p class="text-md font-medium">{title}</p>
+  <div class="flex flex-col gap-0.75 min-w-0 flex-1">
+    <p
+      class="text-md font-medium break-words hyphens-auto line-clamp-2 leading-tight"
+    >
+      {title}
+    </p>
     <p class="text-sm font-geist-mono text-gray-400">{date}</p>
   </div>
-  <icons class="flex gap-4 items-center opacity-60 ml-auto pr-4">
+  <icons class="flex gap-4 items-center opacity-60 ml-auto pl-2 pr-4 shrink-0">
     <Eye size={22} class="cursor-pointer hover:animate-slow-peek" />
     <ArrowDownToLine
       size={20}

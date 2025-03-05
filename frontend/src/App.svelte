@@ -162,6 +162,7 @@
         console.log(data.transcription);
         transcriptionText = data.transcription || "";
         loading = false;
+        fetchHistory();
       } catch (error) {
         console.error(error);
       }
