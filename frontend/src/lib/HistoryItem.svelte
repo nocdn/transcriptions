@@ -1,10 +1,19 @@
 <script>
-  let { title, date, fileExtension, fileNameNoExt, transcription, onDelete } =
-    $props();
+  let {
+    title,
+    date,
+    fileExtension,
+    fileNameNoExt,
+    transcription,
+    onDelete,
+    onShowTranscription,
+  } = $props();
   import { Eye, ArrowDownToLine, Trash2 } from "lucide-svelte";
   import SpinnerRed from "./Spinner.svelte";
   let hovering = $state(false);
   let deleting = $state(false);
+  let showPopover = $state(false);
+  let timer = $state();
 </script>
 
 <historyItem
@@ -43,17 +52,45 @@
   </div>
   <div class="flex flex-col gap-0.75 min-w-0 flex-1">
     <p
-      class="text-sm font-medium break-words hyphens-auto line-clamp-2 leading-tight"
+      class="text-sm font-medium break-words hyphens-auto line-clamp-2 leading-tight motion-preset-fade"
     >
       {title}
     </p>
-    <p class="text-sm font-geist-mono text-gray-400">{date}</p>
+    <p class="text-sm font-geist-mono text-gray-400 motion-preset-fade">
+      {date}
+    </p>
   </div>
-  <icons class="flex gap-4 items-center opacity-60 ml-auto pl-2 pr-4 shrink-0">
-    <Eye size={22} class="cursor-pointer hover:animate-slow-peek" />
+  <icons class="flex gap-4 items-center ml-auto pl-2 pr-4 shrink-0">
+    <div class="relative">
+      <Eye
+        size={22}
+        class="cursor-pointer hover:animate-slow-peek opacity-60 hover:opacity-100 transition-opacity"
+        onmouseenter={() => {
+          timer = setTimeout(() => {
+            showPopover = true;
+          }, 950);
+        }}
+        onmouseleave={() => {
+          clearTimeout(timer);
+          showPopover = false;
+        }}
+        onclick={() => {
+          onShowTranscription(transcription);
+        }}
+      />
+      {#if showPopover}
+        <div
+          class="w-64 h-66 absolute bottom-9 left-1/2 -translate-x-1/2 bg-white rounded-xl border border-gray-200 shadow-xl z-10 p-3 font-geist-mono text-md break-words hyphens-auto"
+        >
+          <p class="line-clamp-[10] overflow-ellipsis">
+            {transcription}
+          </p>
+        </div>
+      {/if}
+    </div>
     <ArrowDownToLine
       size={20}
-      class="cursor-pointer hover:text-blue-900"
+      class="cursor-pointer hover:text-blue-900 opacity-60 hover:opacity-100 transition-opacity"
       onclick={() => {
         // download transcription as txt file
         const blob = new Blob([transcription], { type: "text/plain" });

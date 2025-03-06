@@ -2,4 +2,5 @@
 - change file size limit and warning dynamically based on the provider selected
 - actually add elevenlabs to backend
 - allow uploading video files
-- implement preview functionality for eye icon
+- add animation to eye icon preview popover
+- show which transcription is currently being previewed by adding filename to the top

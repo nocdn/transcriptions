@@ -194,6 +194,10 @@
     console.log("delete", data);
     fetchHistory();
   }
+
+  function handleShowTranscription(transcription) {
+    transcriptionText = transcription;
+  }
 </script>
 
 {#snippet cmdPlusIcon()}
@@ -247,6 +251,7 @@
               fileNameNoExt={item.fileNameNoExt}
               transcription={item.transcription}
               onDelete={() => handleDeleteHistoryItem(item.filename)}
+              onShowTranscription={handleShowTranscription}
             />
           {/each}
         {:else}
