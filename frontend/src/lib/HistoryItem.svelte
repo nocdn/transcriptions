@@ -1,19 +1,49 @@
 <script>
-  let { title, date, fileExtension, fileNameNoExt, transcription } = $props();
-  import { Eye, ArrowDownToLine } from "lucide-svelte";
+  let { title, date, fileExtension, fileNameNoExt, transcription, onDelete } =
+    $props();
+  import { Eye, ArrowDownToLine, Trash2 } from "lucide-svelte";
+  import SpinnerRed from "./Spinner.svelte";
+  let hovering = $state(false);
+  let deleting = $state(false);
 </script>
 
 <historyItem
+  role="button"
+  tabindex="0"
+  onmouseenter={() => (hovering = true)}
+  onmouseleave={() => (hovering = false)}
   class="bg-white p-2 flex gap-4 items-center rounded-xl hover:bg-gray-50"
 >
-  <p
-    class="w-16 min-h-12 grid place-content-center rounded-lg bg-gray-100 font-geist-mono font-semibold text-center mb-auto"
+  <div
+    role="button"
+    tabindex="0"
+    onmousedown={() => {
+      deleting = true;
+      onDelete();
+    }}
+    class="w-16 min-h-12 grid place-content-center rounded-lg bg-gray-100 font-geist-mono font-semibold text-center mb-auto hover:bg-[#F6EAEA] transition-all cursor-pointer"
   >
-    {fileExtension}
-  </p>
+    {#if hovering}
+      {#if deleting}
+        <SpinnerRed class="motion-preset-fade motion-duration-750" />
+      {:else}
+        <Trash2
+          size={20}
+          strokeWidth={2.25}
+          class="motion-preset-fade motion-duration-500 text-red-900"
+        />
+      {/if}
+    {:else if deleting}
+      <SpinnerRed class="motion-preset-fade motion-duration-750" />
+    {:else}
+      <p class="motion-preset-fade motion-duration-500">
+        {fileExtension}
+      </p>
+    {/if}
+  </div>
   <div class="flex flex-col gap-0.75 min-w-0 flex-1">
     <p
-      class="text-md font-medium break-words hyphens-auto line-clamp-2 leading-tight"
+      class="text-sm font-medium break-words hyphens-auto line-clamp-2 leading-tight"
     >
       {title}
     </p>

@@ -178,7 +178,21 @@
     const response = await fetch("/api/history");
     const data = await response.json();
     fetchingHistory = false;
+    console.log(data);
     history = data;
+  }
+
+  async function handleDeleteHistoryItem(filename) {
+    const response = await fetch("/api/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ filename }),
+    });
+    const data = await response.json();
+    console.log("delete", data);
+    fetchHistory();
   }
 </script>
 
@@ -232,6 +246,7 @@
               fileExtension={item.fileExtension}
               fileNameNoExt={item.fileNameNoExt}
               transcription={item.transcription}
+              onDelete={() => handleDeleteHistoryItem(item.filename)}
             />
           {/each}
         {:else}

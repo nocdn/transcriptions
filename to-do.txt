@@ -1,5 +1,5 @@
 - add tooltip explaining that the spark icon means fastest model
 - change file size limit and warning dynamically based on the provider selected
-- delete history items functionality
 - actually add elevenlabs to backend
 - allow uploading video files
+- implement preview functionality for eye icon

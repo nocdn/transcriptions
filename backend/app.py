@@ -28,6 +28,7 @@ FIREWORKS_API_KEY = os.environ.get('FIREWORKS_API_KEY')
 # Rate limits
 TRANSCRIPTION_RATE_LIMIT = os.environ.get('TRANSCRIPTION_RATE_LIMIT', '10 per day')
 HISTORY_RATE_LIMIT = os.environ.get('HISTORY_RATE_LIMIT', '1000 per day')
+DELETE_RATE_LIMIT = os.environ.get('DELETE_RATE_LIMIT', '1000 per day')
 
 if load_dotenv():
     print("Loaded .env file")
@@ -219,6 +220,31 @@ def get_history():
         return jsonify(history)
     except Exception as e:
         logging.error(f'Error getting history: {str(e)}')
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/delete', methods=['POST'])
+@limiter.limit(DELETE_RATE_LIMIT)
+def delete_history_item():
+    try:
+        data = request.json
+        if not data or 'filename' not in data:
+            return jsonify({'error': 'Filename is required'}), 400
+
+        filename = data['filename']
+        # Sanitize the filename to prevent directory traversal attacks
+        safe_filename = secure_filename(filename)
+        file_path = Path(f'history/{safe_filename}.txt')
+
+        if not file_path.exists():
+            return jsonify({'error': 'File not found'}), 404
+
+        # Delete the file
+        file_path.unlink()
+
+        return jsonify({'success': True, 'message': f'Deleted {filename}'})
+
+    except Exception as e:
+        logging.error(f'Error deleting history item: {str(e)}')
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
