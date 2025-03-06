@@ -149,7 +149,7 @@
         formData.append("file", selectedFiles[0]);
         currentFileName = selectedFiles[0].name;
         console.log(formData);
-        const response = await fetch("/api/upload", {
+        const response = await fetch("http://localhost:6005/api/upload", {
           method: "POST",
           body: formData,
         });
@@ -177,7 +177,7 @@
 
   async function fetchHistory() {
     fetchingHistory = true;
-    const response = await fetch("/api/history");
+    const response = await fetch("http://localhost:6005/api/history");
     const data = await response.json();
     fetchingHistory = false;
     console.log(data);
@@ -185,7 +185,7 @@
   }
 
   async function handleDeleteHistoryItem(filename) {
-    const response = await fetch("/api/delete", {
+    const response = await fetch("https://localhost:6005/api/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

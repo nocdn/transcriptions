@@ -187,7 +187,7 @@
   tabindex="0"
 >
   <modal
-    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-md min-w-md flex flex-col gap-4 overflow-y-scroll"
+    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-lg min-w-lg flex flex-col gap-4 overflow-y-scroll"
     onmousedown={(e) => e.stopPropagation()}
     role="dialog"
     tabindex="0"
@@ -250,7 +250,7 @@
         label="Cancel"
         onClick={handleCancel}
         iconPosition="none"
-        hoverColor="#F6EAEA"
+        hoverColor="#FAFAFA"
         class="rounded-xl py-1.5 text-sm"
       />
       <Button

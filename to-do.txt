@@ -1,3 +1,1 @@
-- add tooltip explaining that the spark icon means fastest model
-- actually add elevenlabs to backend
 - allow uploading video files

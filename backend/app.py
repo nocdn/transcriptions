@@ -11,6 +11,7 @@ from pathlib import Path
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import requests
 from dotenv import load_dotenv
+from elevenlabs.client import ElevenLabs
 
 load_dotenv()
 
@@ -24,6 +25,7 @@ DEFAULT_GEMINI_MODEL = os.environ.get('DEFAULT_GEMINI_MODEL', 'gemini-2.0-flash'
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 FIREWORKS_API_KEY = os.environ.get('FIREWORKS_API_KEY')
+ELEVENLABS_API_KEY = os.environ.get('ELEVENLABS_API_KEY')
 
 # Rate limits
 TRANSCRIPTION_RATE_LIMIT = os.environ.get('TRANSCRIPTION_RATE_LIMIT', '10 per day')
@@ -49,6 +51,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Initialize clients
 groq_client = Groq(api_key=GROQ_API_KEY)
+
+elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
 # Setup logging
 logging.basicConfig(
@@ -144,6 +148,17 @@ def process_with_groq(filepath, model, language="en", prompt=""):
     except Exception as e:
         logging.error(f'Error processing with Groq: {str(e)}')
         raise
+
+def process_with_elevenlabs(filepath, model="scribe_v1"):
+    logging.info(f'Processing with Groq:')
+    logging.info(f'Model: {model}')
+    try:
+        elevenlabs_transcription = elevenlabs_client.speech_to_text.convert(file=filepath, model=model, language_code="eng")
+        return elevenlabs_transcription.text
+    except Exception as e:
+        logging.error(f'Error processing with ElevenLabs: {str(e)}')
+        raise
+
 
 @app.route('/api/upload', methods=['POST'])
 @limiter.limit(TRANSCRIPTION_RATE_LIMIT)

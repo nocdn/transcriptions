@@ -44,11 +44,24 @@
 
   --animate-preview-popover: preview-popover cubic-bezier(0.4, 0, 0.2, 1) 0.2s
     forwards;
+  --animate-preview-popover-down: preview-popover-down
+    cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
 
   @keyframes preview-popover {
     0% {
       opacity: 0;
       transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes preview-popover-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
     }
     100% {
       opacity: 1;
