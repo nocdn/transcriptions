@@ -10,7 +10,7 @@
   } = $props();
   let inputFileName = $derived(files.length > 0 ? files[0].name : ""); //derive inputFileName
 
-  // Add additional variable for styles
+  // added additional variable for styles
   let dropzoneClass =
     "rounded-2xl bg-[#FAFAFA] border-2 border-dotted border-gray-300 min-h-48 w-full flex flex-col justify-center items-center gap-5 p-4 text-center cursor-pointer";
 
@@ -25,17 +25,7 @@
     event.currentTarget.classList.remove("dragover");
   }
 
-  function calculateFileSizeColor(size) {
-    if (size < 1024 * 1024 * 10) {
-      return "text-green-600";
-    } else if (size < 1024 * 1024 * 40) {
-      return "text-yellow-600";
-    } else {
-      return "text-red-600";
-    }
-  }
-
-  // Format file size to human-readable format
+  // format file size to human-readable format
   function formatFileSize(bytes) {
     if (bytes === 0) return "0 Bytes";
 
@@ -107,8 +97,8 @@
             {files[0].name}
           </p>
         </div>
-        <p class="font-[450] {calculateFileSizeColor(files[0].size)}">
-          {formatFileSize(files[0].size)}
+        <p class="font-[450] opacity-65 font-geist-mono text-sm">
+          {formatFileSize(files[0].size)} / {maxSize}
         </p>
         <p class="opacity-50 text-sm mt-1">Click to choose a different file</p>
       </div>

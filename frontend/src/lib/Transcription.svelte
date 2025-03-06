@@ -80,6 +80,7 @@
           class="rounded-xl py-1.5 text-sm"
         />
       {/if}
+      <span class="font-geist-mono opacity-60 text-sm ml-4">{fileName}</span>
     </p>
     <div class="overflow-y-scroll h-full" bind:this={scrollableContent}>
       <p class="text-md font-geist-mono pl-2 pr-8">

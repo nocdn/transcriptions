@@ -17,16 +17,14 @@
   --font-geist-mono: "Geist Mono", monospace;
   --font-geist: "Geist", sans-serif;
 
-  --animate-slow-peek: slow-peek cubic-bezier(1, 0.31, 0.19, 1.27) 1.5s forwards;
+  --animate-slow-peek: slow-peek cubic-bezier(1, 0.31, 0.19, 1.27) 1.25s
+    forwards;
   --animate-reverse-slow-peek: reverse-slow-peek
-    cubic-bezier(1, 0.31, 0.19, 1.27) 1.5s forwards;
+    cubic-bezier(1, 0.31, 0.19, 1.27) 1.25s forwards;
 
   @keyframes slow-peek {
     0% {
       transform: translateY(0px);
-    }
-    90% {
-      transform: translateY(-6px);
     }
     100% {
       transform: translateY(-5px);
@@ -41,6 +39,20 @@
     }
     100% {
       transform: translateY(0px);
+    }
+  }
+
+  --animate-preview-popover: preview-popover cubic-bezier(0.4, 0, 0.2, 1) 0.2s
+    forwards;
+
+  @keyframes preview-popover {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

@@ -253,13 +253,6 @@
         hoverColor="#F6EAEA"
         class="rounded-xl py-1.5 text-sm"
       />
-      <button
-        onclick={() => {
-          console.log(settings);
-        }}
-      >
-        log
-      </button>
       <Button
         label="Submit"
         onClick={handleSave}

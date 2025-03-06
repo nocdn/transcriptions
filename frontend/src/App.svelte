@@ -21,6 +21,7 @@
   let selectedFiles = $state([]);
   let loading = $state(false);
   let rateLimited = $state(false);
+  let currentFileName = $state("");
 
   function handleFiles(files) {
     selectedFiles = files;
@@ -146,6 +147,7 @@
           formData.append("error", "Invalid model provider");
         }
         formData.append("file", selectedFiles[0]);
+        currentFileName = selectedFiles[0].name;
         console.log(formData);
         const response = await fetch("/api/upload", {
           method: "POST",
@@ -195,8 +197,24 @@
     fetchHistory();
   }
 
-  function handleShowTranscription(transcription) {
+  function handleShowTranscription(transcription, filename) {
     transcriptionText = transcription;
+    currentFileName = filename;
+  }
+
+  function returnMaxFileSize(provider) {
+    switch (provider) {
+      case "groq":
+        return "100MB";
+      case "gemini":
+        return "2GB";
+      case "fireworks":
+        return "1GB";
+      case "elevenLabs":
+        return "1GB";
+      default:
+        return "40MB";
+    }
   }
 </script>
 
@@ -215,7 +233,12 @@
 <main class="w-dvw h-dvh grid grid-cols-[24rem_1fr] gap-4">
   <column class="flex flex-col gap-3 h-dvh pt-4 pl-4 pb-4">
     <p class="text-xl font-medium pl-1 pt-3 font-geist">Transcribe:</p>
-    <Dropzone {handleFiles} bind:files={selectedFiles} processing={loading} />
+    <Dropzone
+      {handleFiles}
+      bind:files={selectedFiles}
+      processing={loading}
+      maxSize={returnMaxFileSize(settings.currentModelProvider)}
+    />
     <div class="flex justify-between items-center">
       <Button
         label="Cancel"
@@ -280,7 +303,7 @@
     </button>
   </column>
   <column class="flex flex-col gap-3 h-dvh pt-4 pr-1 pb-4">
-    <Transcription {transcriptionText} fileName={selectedFiles[0].name} />
+    <Transcription {transcriptionText} fileName={currentFileName} />
   </column>
 </main>
 

@@ -1,6 +1,3 @@
 - add tooltip explaining that the spark icon means fastest model
-- change file size limit and warning dynamically based on the provider selected
 - actually add elevenlabs to backend
 - allow uploading video files
-- add animation to eye icon preview popover
-- show which transcription is currently being previewed by adding filename to the top
