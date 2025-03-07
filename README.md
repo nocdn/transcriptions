@@ -21,8 +21,8 @@
 
 ### Preview
 
-![Main](https://raw.githubusercontent.com/nocdn/transcription-svelte/main.png)
-![Settings](https://raw.githubusercontent.com/nocdn/transcription-svelte/settings.png)
+![Main](main.png)
+![Settings](settings.png)
 
 ### Setup
 
