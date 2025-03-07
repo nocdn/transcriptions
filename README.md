@@ -19,6 +19,11 @@
 - Can return word level or segment level timestamps
 - BYOK - Bring your own keys
 
+### Preview
+
+![Main](https://raw.githubusercontent.com/nocdn/transcription-svelte/main.png)
+![Settings](https://raw.githubusercontent.com/nocdn/transcription-svelte/settings.png)
+
 ### Setup
 
 #### Option 1: Local Development

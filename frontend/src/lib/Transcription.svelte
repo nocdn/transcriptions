@@ -34,7 +34,7 @@
   <Check size={15} strokeWidth={3} color="darkgreen" />
 {/snippet}
 
-<transcription class="w-full h-full flex flex-col gap-4 relative">
+<transcription class="w-full h-full flex flex-col gap-4 relative pl-4">
   {#if transcriptionText !== ""}
     <p
       class="text-xl font-medium pl-2 pt-3 font-geist inline-flex gap-4 items-center motion-opacity-in-0"
@@ -83,7 +83,10 @@
       <span class="font-geist-mono opacity-60 text-sm ml-4">{fileName}</span>
     </p>
     <div class="overflow-y-scroll h-full" bind:this={scrollableContent}>
-      <p class="text-md font-geist-mono pl-2 pr-8">
+      <p
+        class="text-md pl-2 pr-12"
+        style="font-family: system-ui, sans-serif; font-size: 18px; font-weight: 430;"
+      >
         {transcriptionText}
       </p>
     </div>
