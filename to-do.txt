@@ -1,1 +1,2 @@
 - allow uploading video files
+- make the dropzone border color blue when dragged a file over it

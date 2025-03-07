@@ -274,6 +274,10 @@ def delete_history_item():
         logging.error(f'Error deleting history item: {str(e)}')
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/limits', methods=['GET'])
+def check_rate_limit():
+    return
+
 if __name__ == '__main__':
     # create required directories
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)

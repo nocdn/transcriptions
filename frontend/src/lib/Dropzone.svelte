@@ -1,5 +1,5 @@
 <script>
-  import { FilePlus2, FileAudio } from "lucide-svelte";
+  import { FilePlus2, FileAudio, AlertCircle } from "lucide-svelte";
   import Spinner from "./Spinner.svelte";
 
   let {
@@ -7,6 +7,7 @@
     files = $bindable([]),
     maxSize = "40MB",
     processing = false,
+    rateLimited,
   } = $props();
   let inputFileName = $derived(files.length > 0 ? files[0].name : ""); //derive inputFileName
 
@@ -82,9 +83,26 @@
   ondragover={onDragOver}
   ondragleave={onDragLeave}
   onkeydown={(e) => e.key === "Enter" && openFileDialog()}
-  class="{dropzoneClass} {processing ? 'pointer-events-none opacity-80' : ''}"
+  class="{dropzoneClass} {processing || rateLimited
+    ? 'pointer-events-none opacity-80'
+    : ''}"
 >
-  {#if !processing}
+  {#if rateLimited}
+    <div
+      class="flex flex-col gap-2 items-center justify-center motion-opacity-in-0"
+    >
+      <div
+        class="bg-amber-50 text-amber-700 rounded-xl p-3 border border-amber-200"
+      >
+        <AlertCircle size={20} />
+      </div>
+      <p class="text-md font-medium text-amber-700">Rate Limit Exceeded</p>
+      <p class="text-sm max-w-xs font-geist-mono opacity-70">
+        The maximum number of transcriptions has been reached. Please try again
+        later.
+      </p>
+    </div>
+  {:else if !processing}
     {#if files.length > 0}
       <div class="bg-white rounded-xl p-3 border border-gray-200">
         <FileAudio size={20} />
