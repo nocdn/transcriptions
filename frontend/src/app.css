@@ -68,4 +68,18 @@
       transform: translateY(0);
     }
   }
+
+  --animate-settings-modal-up: settings-modal-up
+    cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s forwards;
+
+  @keyframes settings-modal-up {
+    0% {
+      scale: 0.97;
+      transform: translateY(7px);
+    }
+    100% {
+      scale: 1;
+      transform: translateY(0);
+    }
+  }
 }

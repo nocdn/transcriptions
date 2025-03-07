@@ -178,13 +178,13 @@
 {/snippet}
 
 <overlay
-  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center motion-opacity-in-0 motion-duration-300"
+  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center motion-opacity-in-0 motion-duration-300 motion-ease-[cubic-bezier(0.075, 0.82, 0.165, 1);]"
   onmousedown={close}
   role="dialog"
   tabindex="0"
 >
   <modal
-    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-lg min-w-lg flex flex-col gap-4 overflow-y-scroll"
+    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-lg min-w-lg flex flex-col gap-4 overflow-y-scroll animate-settings-modal-up"
     onmousedown={(e) => e.stopPropagation()}
     role="dialog"
     tabindex="0"
