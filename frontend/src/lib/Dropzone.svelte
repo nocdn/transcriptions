@@ -11,6 +11,8 @@
   } = $props();
   let inputFileName = $derived(files.length > 0 ? files[0].name : ""); //derive inputFileName
 
+  let isDraggingOver = $state(false);
+
   // added additional variable for styles
   let dropzoneClass =
     "rounded-2xl bg-[#FAFAFA] border-2 border-dotted border-gray-300 min-h-48 w-full flex flex-col justify-center items-center gap-5 p-4 text-center cursor-pointer";
@@ -23,6 +25,7 @@
       handleFiles(files);
       console.log(`Dropped file: ${files[0]?.name}`);
     }
+    isDraggingOver = false;
     event.currentTarget.classList.remove("dragover");
   }
 
@@ -56,16 +59,18 @@
   function onDragOver(event) {
     event.preventDefault();
     if (!processing) {
+      isDraggingOver = true;
       event.currentTarget.classList.add("dragover");
     }
   }
 
   function onDragLeave(event) {
+    isDraggingOver = false;
     event.currentTarget.classList.remove("dragover");
   }
 </script>
 
-<!-- Hidden file input element -->
+<!-- hidden file input element -->
 <input
   id="fileInput"
   type="file"
@@ -74,14 +79,16 @@
   class="hidden"
 />
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <dropzone
+  role="button"
   tabindex="0"
   onclick={openFileDialog}
   ondrop={onDrop}
   ondragover={onDragOver}
   ondragleave={onDragLeave}
+  style="border: {isDraggingOver
+    ? '2px dotted blue'
+    : ''}; transition: border 0.3s;"
   onkeydown={(e) => e.key === "Enter" && openFileDialog()}
   class="{dropzoneClass} {processing || rateLimited
     ? 'pointer-events-none opacity-80'
