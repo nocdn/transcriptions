@@ -149,12 +149,21 @@ def process_with_groq(filepath, model, language="en", prompt=""):
         logging.error(f'Error processing with Groq: {str(e)}')
         raise
 
-def process_with_elevenlabs(filepath, model="scribe_v1"):
-    logging.info(f'Processing with Groq:')
+def process_with_elevenlabs(filepath, model="scribe_v1", tag_audio_events=False, diarize=False):
+    logging.info(f'Processing with ElevenLabs:')
     logging.info(f'Model: {model}')
+    logging.info(f'Tag audio events: {tag_audio_events}')
+    logging.info(f'Diarize: {diarize}')
     try:
-        elevenlabs_transcription = elevenlabs_client.speech_to_text.convert(file=filepath, model=model, language_code="eng")
-        return elevenlabs_transcription.text
+        with open(filepath, 'rb') as audio_file:
+            transcription = elevenlabs_client.speech_to_text.convert(
+                file=audio_file,
+                model_id=model,
+                tag_audio_events=tag_audio_events,
+                language_code="eng",
+                diarize=diarize
+            )
+        return transcription.text
     except Exception as e:
         logging.error(f'Error processing with ElevenLabs: {str(e)}')
         raise
@@ -195,7 +204,9 @@ def upload_file():
                 model = request.form.get('fireworksModelValue')
                 language = request.form.get('fireworksLanguageValue')
                 result = process_with_fireworks(filepath, model, language)
-
+            elif provider == 'elevenlabs':
+                model = request.form.get('elevenlabsModelValue')
+                result = process_with_elevenlabs(filepath, model)
 
             save_history_file(f"{filename}.txt", result)
             return jsonify({'transcription': result})
@@ -248,6 +259,7 @@ def delete_history_item():
         filename = data['filename']
         # Sanitize the filename to prevent directory traversal attacks
         safe_filename = secure_filename(filename)
+        logging.info(f'Deleting file: {safe_filename}')
         file_path = Path(f'history/{safe_filename}.txt')
 
         if not file_path.exists():

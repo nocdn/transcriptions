@@ -44,17 +44,14 @@
     gemini: {
       geminiModelValue: "gemini-2.0-flash",
       geminiPromptValue: "",
-      geminiLanguageValue: "",
     },
     fireworks: {
       fireworksModelValue: "fireworks/whisper-v3-turbo",
       fireworksPromptValue: "",
       fireworksLanguageValue: "en",
     },
-    elevenLabs: {
-      elevenLabsModelValue: "scribe_v1",
-      elevenLabsPromptValue: "",
-      elevenLabsLanguageValue: "",
+    elevenlabs: {
+      elevenlabsModelValue: "scribe_v1",
     },
   });
 
@@ -76,9 +73,9 @@
             ...settings.fireworks,
             ...(parsedSettings.fireworks || {}),
           },
-          elevenLabs: {
-            ...settings.elevenLabs,
-            ...(parsedSettings.elevenLabs || {}),
+          elevenlabs: {
+            ...settings.elevenlabs,
+            ...(parsedSettings.elevenlabs || {}),
           },
         };
       } catch (error) {
@@ -113,10 +110,6 @@
             "geminiPromptValue",
             settings.gemini.geminiPromptValue
           );
-          formData.append(
-            "geminiLanguageValue",
-            settings.gemini.geminiLanguageValue
-          );
         } else if (settings.currentModelProvider === "fireworks") {
           formData.append(
             "fireworksModelValue",
@@ -130,18 +123,10 @@
             "fireworksLanguageValue",
             settings.fireworks.fireworksLanguageValue
           );
-        } else if (settings.currentModelProvider === "elevenLabs") {
+        } else if (settings.currentModelProvider === "elevenlabs") {
           formData.append(
-            "elevenLabsModelValue",
-            settings.elevenLabs.elevenLabsModelValue
-          );
-          formData.append(
-            "elevenLabsPromptValue",
-            settings.elevenLabs.elevenLabsPromptValue
-          );
-          formData.append(
-            "elevenLabsLanguageValue",
-            settings.elevenLabs.elevenLabsLanguageValue
+            "elevenlabsModelValue",
+            settings.elevenlabs.elevenlabsModelValue
           );
         } else {
           formData.append("error", "Invalid model provider");
@@ -149,7 +134,7 @@
         formData.append("file", selectedFiles[0]);
         currentFileName = selectedFiles[0].name;
         console.log(formData);
-        const response = await fetch("http://localhost:6005/api/upload", {
+        const response = await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });
@@ -177,7 +162,7 @@
 
   async function fetchHistory() {
     fetchingHistory = true;
-    const response = await fetch("http://localhost:6005/api/history");
+    const response = await fetch("/api/history");
     const data = await response.json();
     fetchingHistory = false;
     console.log(data);
@@ -185,7 +170,7 @@
   }
 
   async function handleDeleteHistoryItem(filename) {
-    const response = await fetch("https://localhost:6005/api/delete", {
+    const response = await fetch("/api/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -210,7 +195,7 @@
         return "2GB";
       case "fireworks":
         return "1GB";
-      case "elevenLabs":
+      case "elevenlabs":
         return "1GB";
       default:
         return "40MB";

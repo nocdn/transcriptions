@@ -18,17 +18,14 @@
     gemini: {
       geminiModelValue: "gemini-2.0-flash",
       geminiPromptValue: "",
-      geminiLanguageValue: "",
     },
     fireworks: {
       fireworksModelValue: "fireworks/whisper-v3-turbo",
       fireworksPromptValue: "",
       fireworksLanguageValue: "en",
     },
-    elevenLabs: {
-      elevenLabsModelValue: "scribe_v1",
-      elevenLabsPromptValue: "",
-      elevenLabsLanguageValue: "",
+    elevenlabs: {
+      elevenlabsModelValue: "scribe_v1",
     },
   });
 
@@ -46,8 +43,8 @@
         return settings.gemini.geminiModelValue;
       case "fireworks":
         return settings.fireworks.fireworksModelValue;
-      case "elevenLabs":
-        return settings.elevenLabs.elevenLabsModelValue;
+      case "elevenlabs":
+        return settings.elevenlabs.elevenlabsModelValue;
       default:
         return "whisper-large-v3";
     }
@@ -68,9 +65,9 @@
         currentPromptValue = settings.fireworks.fireworksPromptValue;
         currentLanguageValue = settings.fireworks.fireworksLanguageValue;
         break;
-      case "elevenLabs":
-        currentPromptValue = settings.elevenLabs.elevenLabsPromptValue;
-        currentLanguageValue = settings.elevenLabs.elevenLabsLanguageValue;
+      case "elevenlabs":
+        currentPromptValue = settings.elevenlabs.elevenlabsPromptValue;
+        currentLanguageValue = settings.elevenlabs.elevenlabsLanguageValue;
         break;
     }
   }
@@ -90,9 +87,9 @@
         settings.fireworks.fireworksPromptValue = currentPromptValue;
         settings.fireworks.fireworksLanguageValue = currentLanguageValue;
         break;
-      case "elevenLabs":
-        settings.elevenLabs.elevenLabsPromptValue = currentPromptValue;
-        settings.elevenLabs.elevenLabsLanguageValue = currentLanguageValue;
+      case "elevenlabs":
+        settings.elevenlabs.elevenlabsPromptValue = currentPromptValue;
+        settings.elevenlabs.elevenlabsLanguageValue = currentLanguageValue;
         break;
     }
   });
@@ -111,8 +108,8 @@
       currentModelProvider = "gemini";
       settings.gemini.geminiModelValue = model;
     } else if (model.includes("scribe")) {
-      currentModelProvider = "elevenLabs";
-      settings.elevenLabs.elevenLabsModelValue = model;
+      currentModelProvider = "elevenlabs";
+      settings.elevenlabs.elevenlabsModelValue = model;
     } else {
       currentModelProvider = "groq";
       settings.groq.groqModelValue = model;
@@ -149,9 +146,9 @@
             ...settings.fireworks,
             ...(parsedSettings.fireworks || {}),
           },
-          elevenLabs: {
-            ...settings.elevenLabs,
-            ...(parsedSettings.elevenLabs || {}),
+          elevenlabs: {
+            ...settings.elevenlabs,
+            ...(parsedSettings.elevenlabs || {}),
           },
         };
 
@@ -214,7 +211,7 @@
       </prompt>
     {/if}
     <!-- Language input -->
-    {#if currentModelProvider !== "elevenLabs"}
+    {#if currentModelProvider === "groq" || currentModelProvider === "fireworks"}
       <languageInput class="space-y-2 inline-flex flex-col">
         <label
           class="text-sm font-medium font-geist-mono leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -264,3 +261,10 @@
     </buttons>
   </modal>
 </overlay>
+
+<!-- Hiding the scrollbar -->
+<style>
+  modal {
+    scrollbar-width: none;
+  }
+</style>
