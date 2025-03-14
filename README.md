@@ -26,7 +26,56 @@
 
 ### Setup
 
-#### Option 1: Local Development
+#### Option 1: Docker Setup (Recommended)
+
+##### Prerequisites
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+Clone the repository
+
+```bash
+git clone https://github.com/nocdn/transcriptions.git
+cd transcription-svelte
+```
+
+Configure your API keys and settingsby copying the `.env.example` file to `.env` and filling it in with your own values.
+
+```bash
+cp .env.example .env
+```
+
+Build and start the Docker containers.
+
+```bash
+docker compose up -d --build
+```
+
+Depending on where you host it, the application will be available at `http://localhost:4090` or `http://[your-machine-ip]:4090`
+
+##### Updating (if using Docker)
+
+Stop the containers:
+
+```bash
+docker compose down
+```
+
+Pull the latest changes:
+
+```bash
+git pull
+```
+
+Build and start the Docker containers again:
+
+```bash
+docker-compose up -d --build
+```
+
+
+#### Option 2: Local Development
 
 ##### Prerequisites
 
@@ -71,54 +120,6 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python app.py
-```
-
-#### Option 2: Docker Setup
-
-##### Prerequisites
-
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
-
-Clone the repository
-
-```bash
-git clone https://github.com/nocdn/transcriptions.git
-cd transcription-svelte
-```
-
-Configure your API keys and settingsby copying the `.env.example` file to `.env` and filling it in with your own values.
-
-```bash
-cp .env.example .env
-```
-
-Build and start the Docker containers.
-
-```bash
-docker-compose up -d --build
-```
-
-Depending on where you host it, the application will be available at http://localhost:4090 or http://[your-machine-ip]:4090
-
-##### How to update if using docker
-
-Stop the containers:
-
-```bash
-docker compose down
-```
-
-Pull the latest changes:
-
-```bash
-git pull
-```
-
-Build and start the Docker containers again:
-
-```bash
-docker-compose up -d --build
 ```
 
 ### License
