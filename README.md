@@ -38,13 +38,13 @@ You must have the following installed on your machine:
 Clone the repository:
 
 ```bash
-git clone https://github.com/nocdn/transcription-svelte.git
+git clone https://github.com/nocdn/transcriptions.git
 ```
 
 Install the frontend dependencies:
 
 ```bash
-cd transcription-svelte/frontend
+cd transcriptions/frontend
 npm install
 ```
 
@@ -59,14 +59,14 @@ For the backend:
 Configure your API keys and settings by copying the `.env.example` file to `.env` and filling it in with your own values.
 
 ```bash
-cd transcription-svelte/backend
+cd transcriptions/backend
 cp .env.example .env
 ```
 
 In a new terminal, start the back-end development server:
 
 ```bash
-cd transcription-svelte/backend
+cd transcriptions/backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -83,7 +83,7 @@ python app.py
 Clone the repository
 
 ```bash
-git clone https://github.com/nocdn/transcription-svelte.git
+git clone https://github.com/nocdn/transcriptions.git
 cd transcription-svelte
 ```
 
@@ -99,7 +99,7 @@ Build and start the Docker containers.
 docker-compose up -d --build
 ```
 
-depending on where you host it, the application will be available at http://localhost:4090 or http://[your-machine-ip]:4090
+Depending on where you host it, the application will be available at http://localhost:4090 or http://[your-machine-ip]:4090
 
 ##### How to update if using docker
 
