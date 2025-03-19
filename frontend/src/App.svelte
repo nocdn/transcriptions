@@ -53,6 +53,7 @@
     elevenlabs: {
       elevenlabsModelValue: "scribe_v1",
     },
+    notificationEnabled: false,
   });
 
   let history = $state([]);
@@ -149,6 +150,14 @@
         console.log(data.transcription);
         transcriptionText = data.transcription || "";
         loading = false;
+
+        if (settings.notificationEnabled) {
+          console.log("sending notification");
+          const notification = new Notification("Transcription Complete", {
+            body: currentFileName,
+          });
+        }
+
         fetchHistory();
       } catch (error) {
         console.error(error);

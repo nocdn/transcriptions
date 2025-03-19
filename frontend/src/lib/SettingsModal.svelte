@@ -2,6 +2,7 @@
   import ModelTable from "./ModelTable.svelte";
   import ModelPicker from "./ModelPicker.svelte";
   import Button from "./Button.svelte";
+  import Switch from "./Switch.svelte";
   import { onMount } from "svelte";
   import { Languages, Command, Plus, CornerDownLeft } from "lucide-svelte";
 
@@ -27,6 +28,7 @@
     elevenlabs: {
       elevenlabsModelValue: "scribe_v1",
     },
+    notificationEnabled: false,
   });
 
   let currentModelProvider = $state("groq");
@@ -189,8 +191,18 @@
     role="dialog"
     tabindex="0"
   >
-    <header>
-      <p class="text-2xl font-medium font-geist-mono">Settings</p>
+    <header class="flex items-center justify-between">
+      <p class="text-2xl font-semibold font-geist tracking-wide">Settings</p>
+      <div class="flex items-center gap-2">
+        <p>Send notifications</p>
+        <Switch
+          id="notification-switch"
+          checked={settings.notificationEnabled}
+          onToggle={(value) => {
+            settings.notificationEnabled = value;
+          }}
+        />
+      </div>
     </header>
     <ModelPicker onChoice={handleModelChange} modelChoice={currentModelValue} />
     <ModelTable />

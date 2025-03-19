@@ -1,6 +1,5 @@
 - allow uploading video files
 - batch uploading
-- send notifications to browser when transcription is complete
 - webhooks for sending transcription results
 - rate limits for individual ip addresses
 - offline whisper models with transformers.js
