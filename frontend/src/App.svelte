@@ -17,23 +17,6 @@
     HeartCrack,
   } from "lucide-svelte";
 
-  let transcriptionText = $state("");
-  let selectedFiles = $state([]);
-  let loading = $state(false);
-  let rateLimited = $state(false);
-  let currentFileName = $state("");
-
-  function handleFiles(files) {
-    selectedFiles = files;
-  }
-
-  let isOpen = $state(false);
-
-  function toggleDrawer() {
-    isOpen = !isOpen;
-    console.log("isOpen", isOpen);
-  }
-
   let settings = $state({
     currentModelProvider: "groq",
     groq: {
@@ -54,7 +37,25 @@
       elevenlabsModelValue: "scribe_v1",
     },
     notificationEnabled: false,
+    webhookUrl: "",
   });
+
+  let transcriptionText = $state("");
+  let selectedFiles = $state([]);
+  let loading = $state(false);
+  let rateLimited = $state(false);
+  let currentFileName = $state("");
+
+  function handleFiles(files) {
+    selectedFiles = files;
+  }
+
+  let isOpen = $state(false);
+
+  function toggleDrawer() {
+    isOpen = !isOpen;
+    console.log("isOpen", isOpen);
+  }
 
   let history = $state([]);
   let fetchingHistory = $state(false);
@@ -78,9 +79,10 @@
             ...settings.elevenlabs,
             ...(parsedSettings.elevenlabs || {}),
           },
+          webhookUrl: parsedSettings.webhookUrl || "",
         };
       } catch (error) {
-        console.error("Error parsing saved settings:", error);
+        console.error("error parsing saved settings:", error);
       }
     }
 
@@ -134,6 +136,7 @@
         }
         formData.append("file", selectedFiles[0]);
         currentFileName = selectedFiles[0].name;
+        formData.append("webhookUrl", settings.webhookUrl);
         console.log(formData);
         const response = await fetch("/api/upload", {
           method: "POST",

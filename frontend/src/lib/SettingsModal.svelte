@@ -8,7 +8,7 @@
 
   let { close } = $props();
 
-  // initial settings structure
+  // updated settings structure to include webhookUrl property
   let settings = $state({
     currentModelProvider: "groq",
     groq: {
@@ -29,6 +29,7 @@
       elevenlabsModelValue: "scribe_v1",
     },
     notificationEnabled: false,
+    webhookUrl: "",
   });
 
   let currentModelProvider = $state("groq");
@@ -36,7 +37,7 @@
   let currentPromptValue = $state("");
   let currentLanguageValue = $state("en");
 
-  // helper function to get the current model value based on provider
+  // helper fn to get current model value based on provider
   function getCurrentModelValue() {
     switch (currentModelProvider) {
       case "groq":
@@ -116,12 +117,11 @@
       currentModelProvider = "groq";
       settings.groq.groqModelValue = model;
     }
-
     // update current model value and settings
     currentModelValue = model;
     settings.currentModelProvider = currentModelProvider;
     updateCurrentValues();
-    console.log("Selected model:", model, "Provider:", currentModelProvider);
+    console.log("selected model:", model, "provider:", currentModelProvider);
   }
 
   function handleCancel() {
@@ -138,7 +138,7 @@
     if (savedSettings) {
       try {
         const parsedSettings = JSON.parse(savedSettings);
-        // deep merge the saved settings with the default settings structure
+        // deep merge the saved settings with the default structure
         settings = {
           ...settings,
           ...parsedSettings,
@@ -152,20 +152,14 @@
             ...settings.elevenlabs,
             ...(parsedSettings.elevenlabs || {}),
           },
+          webhookUrl: parsedSettings.webhookUrl || "",
         };
-
-        // set current model provider
         currentModelProvider = settings.currentModelProvider || "groq";
-
-        // set current model value based on provider
         currentModelValue = getCurrentModelValue();
-
-        // update current prompt and language values
         updateCurrentValues();
-
-        console.log("Loaded settings:", settings);
+        console.log("loaded settings:", settings);
       } catch (error) {
-        console.error("Error parsing saved settings:", error);
+        console.error("error parsing saved settings:", error);
       }
     }
   });
@@ -206,33 +200,29 @@
     </header>
     <ModelPicker onChoice={handleModelChange} modelChoice={currentModelValue} />
     <ModelTable />
-    <!-- Prompt input -->
     {#if currentModelProvider === "groq" || currentModelProvider === "gemini" || currentModelProvider === "fireworks"}
       <prompt>
         <label
           class="text-sm font-medium font-geist-mono leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          for="prompt-input"
-          >Prompt for {currentModelProvider}
-        </label>
+          for="prompt-input">prompt for {currentModelProvider}</label
+        >
         <textarea
           class="flex min-h-[80px] w-full rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 font-sans"
           id="prompt-input"
-          placeholder="Enter any prompt, or leave blank"
+          placeholder="enter any prompt, or leave blank"
           bind:value={currentPromptValue}
         ></textarea>
       </prompt>
     {/if}
-    <!-- Language input -->
     {#if currentModelProvider === "groq" || currentModelProvider === "fireworks"}
       <languageInput class="space-y-2 inline-flex flex-col">
         <label
           class="text-sm font-medium font-geist-mono leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          for="language-input"
-          >Language for {currentModelProvider}
-        </label>
+          for="language-input">language for {currentModelProvider}</label
+        >
         <div class="relative">
           <input
-            class="flex h-9 w-full font-mono rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9"
+            class="flex h-9 w-full font-mono rounded-lg border border-gray-200 border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50 peer pe-9 ps-3"
             id="language-input"
             placeholder="en"
             type="language"
@@ -253,7 +243,21 @@
         automatically
       </p>
     {/if}
-    <!-- Cancel and Save buttons -->
+    <div class="">
+      <label
+        for="webhook-url"
+        class="text-sm font-medium font-geist-mono text-foreground"
+      >
+        webhook url <span class="opacity-50">(optional)</span>
+      </label>
+      <input
+        id="webhook-url"
+        type="url"
+        placeholder="https://example.com/webhook"
+        bind:value={settings.webhookUrl}
+        class="mt-1 flex h-9 w-full font-mono rounded-lg border border-gray-200 bg-background px-3 py-2 text-sm text-foreground shadow-sm transition-shadow placeholder:text-muted-foreground/70"
+      />
+    </div>
     <buttons class="flex justify-between items-center">
       <Button
         label="Cancel"
@@ -274,7 +278,6 @@
   </modal>
 </overlay>
 
-<!-- Hiding the scrollbar -->
 <style>
   modal {
     scrollbar-width: none;

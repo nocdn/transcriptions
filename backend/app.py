@@ -209,6 +209,21 @@ def upload_file():
                 result = process_with_elevenlabs(filepath, model)
 
             save_history_file(f"{filename}.txt", result)
+
+            webhook_url = request.form.get('webhookUrl')
+            if webhook_url:
+                payload = {
+                    'filename': filename,
+                    'transcription': result,
+                    'provider': provider,
+                }
+                try:
+                    r = requests.post(webhook_url, json=payload)
+                    if r.status_code not in (200, 201, 202):
+                        logging.error(f'webhook error, code: {r.status_code}')
+                except Exception as e:
+                    logging.error(f'error sending webhook: {str(e)}')
+
             return jsonify({'transcription': result})
 
         finally:
