@@ -71,9 +71,8 @@ git pull
 Build and start the Docker containers again:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
-
 
 #### Option 2: Local Development
 
