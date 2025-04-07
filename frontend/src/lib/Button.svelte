@@ -23,7 +23,7 @@
 
 <button
   onclick={onClick}
-  class="text-md font-semibold flex gap-4 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 cursor-pointer font-mono {className} transition-colors duration-100"
+  class="text-md font-semibold flex gap-4 items-center border border-gray-200 border-input dark:border-gray-500 rounded-md px-4 py-2 cursor-pointer font-jetbrains-mono {className} transition-colors duration-100"
   style="--darkest-color: {darkestHex}; --hover-color: {hoverColor}; --border-color: {darkenedHex}"
   >{#if iconPosition === "leading"}{@render icon()}{label}{:else if iconPosition === "trailing"}{label}{@render icon()}{:else}{label}{/if}</button
 >

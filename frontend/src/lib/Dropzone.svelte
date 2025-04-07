@@ -133,8 +133,8 @@
       </div>
       <div class="flex flex-col gap-0.5">
         <p class="text-md font-medium">Click to upload, or drag and drop</p>
-        <p class="opacity-50 font-[450]">
-          Audio or video files up to {maxSize} each
+        <p class="opacity-50 font-[450] font-jetbrains-mono text-sm">
+          Files up to {maxSize} each
         </p>
       </div>
     {/if}

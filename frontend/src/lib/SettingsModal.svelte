@@ -1,10 +1,16 @@
 <script>
-  import ModelTable from "./ModelTable.svelte";
   import ModelPicker from "./ModelPicker.svelte";
+  import StatsModal from "./StatsModal.svelte";
   import Button from "./Button.svelte";
   import Switch from "./Switch.svelte";
   import { onMount } from "svelte";
-  import { Languages, Command, Plus, CornerDownLeft } from "lucide-svelte";
+  import {
+    Languages,
+    Command,
+    Plus,
+    CornerDownLeft,
+    Info,
+  } from "lucide-svelte";
 
   let { close } = $props();
 
@@ -163,6 +169,9 @@
       }
     }
   });
+
+  let showingStatsModal = $state(false);
+  let dismissingSettingsModal = $state(false);
 </script>
 
 {#snippet cmdPlusIcon()}
@@ -173,22 +182,35 @@
   </div>
 {/snippet}
 
+{#snippet infoIcon()}
+  <Info size={15} />
+{/snippet}
+
 <overlay
-  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center motion-opacity-in-0 motion-duration-300 motion-ease-[cubic-bezier(0.075, 0.82, 0.165, 1);]"
-  onmousedown={close}
+  class="fixed top-0 left-0 w-full h-full bg-black/50 z-10 flex items-center justify-center {dismissingSettingsModal
+    ? 'animate-bg-fade-out'
+    : 'animate-bg-fade-in'}"
+  onmousedown={() => {
+    dismissingSettingsModal = true;
+    setTimeout(() => {
+      handleCancel();
+    }, 300);
+  }}
   role="dialog"
   tabindex="0"
 >
   <modal
-    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-lg min-w-lg flex flex-col gap-4 overflow-y-scroll animate-settings-modal-up"
+    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-lg min-w-lg flex flex-col gap-4 overflow-y-scroll {dismissingSettingsModal
+      ? 'animate-settings-modal-down'
+      : 'animate-settings-modal-up'}"
     onmousedown={(e) => e.stopPropagation()}
     role="dialog"
     tabindex="0"
   >
-    <header class="flex items-center justify-between">
-      <p class="text-2xl font-semibold font-geist tracking-wide">Settings</p>
+    <header class="flex items-center justify-between mb-3">
+      <p class="text-lg font-bold font-jetbrains-mono">SETTINGS</p>
       <div class="flex items-center gap-2">
-        <p>Send notifications</p>
+        <p class="font-jetbrains-mono text-xs mr-2">NOTIFICATIONS</p>
         <Switch
           id="notification-switch"
           checked={settings.notificationEnabled}
@@ -199,7 +221,14 @@
       </div>
     </header>
     <ModelPicker onChoice={handleModelChange} modelChoice={currentModelValue} />
-    <ModelTable />
+    <Button
+      label="MODEL STATS"
+      onClick={() => (showingStatsModal = true)}
+      iconPosition="trailing"
+      icon={infoIcon}
+      hoverColor="#FAFAFA"
+      class="rounded-lg py-1.5 text-xs w-fit gap-0"
+    />
     {#if currentModelProvider === "groq" || currentModelProvider === "gemini" || currentModelProvider === "fireworks"}
       <prompt>
         <label
@@ -261,14 +290,24 @@
     <buttons class="flex justify-between items-center">
       <Button
         label="Cancel"
-        onClick={handleCancel}
+        onClick={() => {
+          dismissingSettingsModal = true;
+          setTimeout(() => {
+            handleCancel();
+          }, 300);
+        }}
         iconPosition="none"
         hoverColor="#FAFAFA"
         class="rounded-xl py-1.5 text-sm"
       />
       <Button
         label="Submit"
-        onClick={handleSave}
+        onClick={() => {
+          dismissingSettingsModal = true;
+          setTimeout(() => {
+            handleSave();
+          }, 300);
+        }}
         icon={cmdPlusIcon}
         iconPosition="trailing"
         hoverColor="#EEF2FF"
@@ -277,6 +316,10 @@
     </buttons>
   </modal>
 </overlay>
+
+{#if showingStatsModal}
+  <StatsModal onDismiss={() => (showingStatsModal = false)} />
+{/if}
 
 <style>
   modal {

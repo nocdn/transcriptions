@@ -80,7 +80,7 @@
       />
       {#if showPopover}
         <div
-          class="w-64 h-66 absolute bottom-9 left-1/2 -translate-x-1/2 bg-white rounded-xl border border-gray-200 shadow-xl z-10 p-3 font-geist-mono text-md break-words hyphens-auto animate-preview-popover"
+          class="w-64 h-66 absolute bottom-9 left-1/2 -translate-x-1/2 bg-white rounded-xl border border-gray-200 shadow-xl z-10 p-3 font-jetbrains-mono font-semibold text-sm break-words hyphens-auto animate-preview-popover"
         >
           <p class="line-clamp-[10] overflow-ellipsis">
             {transcription}

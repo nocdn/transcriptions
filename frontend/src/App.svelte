@@ -229,7 +229,11 @@
 
 <main class="w-dvw h-dvh grid grid-cols-[24rem_1fr] gap-4">
   <column class="flex flex-col gap-3 h-dvh pt-4 pl-4 pb-4">
-    <p class="text-xl font-medium pl-1 pt-3 font-geist">Transcribe:</p>
+    <p
+      class="text-md pl-1 pt-3 font-jetbrains-mono font-semibold text-gray-600"
+    >
+      TRANSCRIBE:
+    </p>
     <Dropzone
       {handleFiles}
       bind:files={selectedFiles}
@@ -258,7 +262,11 @@
         class="rounded-xl py-2.5"
       />
     </div>
-    <p class="text-xl font-medium pl-1 pt-5 font-geist">History:</p>
+    <p
+      class="text-md font-semibold pl-1 pt-5 font-jetbrains-mono text-gray-600"
+    >
+      HISTORY:
+    </p>
     <historyContainer
       class="border border-gray-200 rounded-xl flex flex-col gap-0.5"
     >
