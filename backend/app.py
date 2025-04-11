@@ -99,10 +99,15 @@ def process_with_fireworks(filepath, model="fireworks/whisper-v3-turbo", languag
     logging.info(f'Language: {language}')
     correct_model = model.replace("fireworks/", "")
     logging.info(f'Using correct model name: {correct_model}')
+    fireworks_endpoint_url = ""
+    if correct_model == "whisper-v3-turbo":
+        fireworks_endpoint_url = "https://audio-turbo.us-virginia-1.direct.fireworks.ai/v1/audio/transcriptions"
+    else:
+        fireworks_endpoint_url = "https://audio-prod.us-virginia-1.direct.fireworks.ai/v1/audio/transcriptions"
     try:
         with open(filepath, "rb") as f:
             response = requests.post(
-                "https://audio-turbo.us-virginia-1.direct.fireworks.ai/v1/audio/transcriptions",
+                fireworks_endpoint_url,
                 headers={"Authorization": f"Bearer {FIREWORKS_API_KEY}"},
                 files={"file": f},
                 data={

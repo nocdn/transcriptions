@@ -22,7 +22,7 @@
   tabindex="0"
 >
   <modal
-    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-116 min-w-116 flex flex-col gap-3 overflow-y-scroll {dismissing
+    class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-1/2 max-w-120 min-w-120 flex flex-col gap-3 overflow-y-scroll {dismissing
       ? 'animate-settings-modal-down'
       : 'animate-settings-modal-up'}"
   >

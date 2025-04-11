@@ -25,7 +25,9 @@
         >gemini-2.0-flash-lite</option
       ><option value="gemini-2.0-pro-exp-02-05">gemini-2.0-pro</option><option
         value="fireworks/whisper-v3-turbo">fireworks/whisper-v3-turbo</option
-      ><option value="scribe_v1">scribe v1</option></select
+      ><option value="fireworks/whisper-v3">fireworks/whisper-v3</option><option
+        value="scribe_v1">scribe v1</option
+      ></select
     ><span
       class="pointer-events-none absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center text-muted-foreground/80 peer-disabled:opacity-50"
       ><ChevronDown size={16} /></span

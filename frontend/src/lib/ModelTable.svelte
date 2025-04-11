@@ -37,7 +37,10 @@
                 class="w-52 absolute top-5 -right-2 bg-white rounded-xl border border-gray-200 shadow-xl z-20 p-2.5 font-geist break-words hyphens-auto animate-preview-popover-down"
               >
                 <p class="line-clamp-[10] overflow-ellipsis text-sm">
-                  Word Error Rate, lower means higher accuracy.
+                  Word Error Rate, lower means higher accuracy. <span
+                    class="opacity-40 font-geist-mono text-xs"
+                    >Measured by Artificial Analysis.</span
+                  >
                 </p>
               </div>
             {/if}
@@ -148,7 +151,7 @@
       >
         <td
           class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-regular flex items-center gap-2"
-          >whisper-v3-turbo <div
+          >fireworks/whisper-v3-turbo <div
             role="button"
             tabindex="0"
             class="relative"
@@ -178,6 +181,22 @@
         <td
           class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
           >13.7%</td
+        >
+      </tr>
+      <tr
+        class="border-b border-gray-200 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      >
+        <td
+          class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2 font-regular"
+          >fireworks/whisper-v3</td
+        >
+        <td
+          class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+          >$0.09</td
+        >
+        <td
+          class="p-3 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5 py-2"
+          >11.2%</td
         >
       </tr>
       <tr
