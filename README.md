@@ -37,10 +37,10 @@ Clone the repository
 
 ```bash
 git clone https://github.com/nocdn/transcriptions.git
-cd transcription-svelte
+cd transcriptions
 ```
 
-Configure your API keys and settingsby copying the `.env.example` file to `.env` and filling it in with your own values.
+Configure your API keys and settings by copying the `.env.example` file to `.env` and filling it in with your own values.
 
 ```bash
 cp .env.example .env
