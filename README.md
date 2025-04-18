@@ -121,6 +121,100 @@ pip install -r requirements.txt
 python app.py
 ```
 
+### Using the API
+
+If you've exposed the backend service (either via Docker port mapping or running locally), you can interact with the API directly. The base URL will be `http://<your-host-ip>:6005/api`.
+
+#### Endpoints
+
+1.  **Upload & Transcribe Audio**
+    *   **URL:** `/upload`
+    *   **Method:** `POST`
+    *   **Content-Type:** `multipart/form-data`
+    *   **Form Data:**
+        *   `file`: The audio file to transcribe (required).
+        *   `currentModelProvider`: The provider to use: `groq`, `gemini`, `fireworks`, or `elevenlabs` (required).
+        *   **Provider Specific Fields (required based on `currentModelProvider`):**
+            *   If `groq`: `groqModelValue`, `groqPromptValue` (optional), `groqLanguageValue`.
+            *   If `gemini`: `geminiModelValue`, `geminiPromptValue` (optional, defaults to value in `.env`).
+            *   If `fireworks`: `fireworksModelValue`, `fireworksLanguageValue`.
+            *   If `elevenlabs`: `elevenlabsModelValue`.
+        *   `webhookUrl`: A URL to send the transcription result to via a POST request (optional).
+    *   **Success Response (200 OK):**
+        ```json
+        {
+          "transcription": "The transcribed text..."
+        }
+        ```
+    *   **Error Responses:**
+        *   `400 Bad Request`: Missing file, invalid provider, or unsupported file type.
+        *   `429 Too Many Requests`: Rate limit exceeded.
+        *   `500 Internal Server Error`: Backend processing error.
+    *   **Example (using curl):**
+        ```bash
+        curl -X POST -F "file=@/path/to/your/audio.mp3" \
+             -F "currentModelProvider=groq" \
+             -F "groqModelValue=whisper-large-v3" \
+             -F "groqLanguageValue=en" \
+             http://<your-host-ip>:6005/api/upload
+        ```
+
+2.  **Get Transcription History**
+    *   **URL:** `/history`
+    *   **Method:** `GET`
+    *   **Success Response (200 OK):** An array of history items.
+        ```json
+        [
+          {
+            "date": "26-07-2024",
+            "fileExtension": "mp3",
+            "fileNameNoExt": "myaudio",
+            "filename": "myaudio.mp3",
+            "transcription": "The transcribed text..."
+          },
+          // ... more items
+        ]
+        ```
+    *   **Error Responses:**
+        *   `500 Internal Server Error`: Error reading history.
+    *   **Example (using curl):**
+        ```bash
+        curl http://<your-host-ip>:6005/api/history
+        ```
+
+3.  **Delete History Item**
+    *   **URL:** `/delete`
+    *   **Method:** `POST`
+    *   **Content-Type:** `application/json`
+    *   **Request Body:**
+        ```json
+        {
+          "filename": "myaudio.mp3"
+        }
+        ```
+        *(Note: Use the original filename as returned by the `/history` endpoint)*
+    *   **Success Response (200 OK):**
+        ```json
+        {
+          "success": true,
+          "message": "Deleted myaudio.mp3"
+        }
+        ```
+    *   **Error Responses:**
+        *   `400 Bad Request`: Missing filename in request body.
+        *   `404 Not Found`: The specified file doesn't exist in the history.
+        *   `500 Internal Server Error`: Error during deletion.
+    *   **Example (using curl):**
+        ```bash
+        curl -X POST -H "Content-Type: application/json" \
+             -d '{"filename": "myaudio.mp3"}' \
+             http://<your-host-ip>:6005/api/delete
+        ```
+
+#### Rate Limiting
+
+The API endpoints have rate limits configured in the `.env` file (`TRANSCRIPTION_RATE_LIMIT`, `HISTORY_RATE_LIMIT`, `DELETE_RATE_LIMIT`). These limits are applied per IP address. If you exceed the limit, you will receive a `429 Too Many Requests` response.
+
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
