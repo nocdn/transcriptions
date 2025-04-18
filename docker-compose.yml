@@ -11,6 +11,8 @@ services:
     env_file:
       - .env
     restart: always
+    ports:
+      - "6005:6005"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6005/api/history"]
       interval: 30s
